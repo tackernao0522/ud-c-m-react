@@ -199,3 +199,80 @@ const helloFn = (e) => {
 }
 btnEl.addEventListener('click', helloFn);
 ```
+
+## 14. 配列のmap、filterメソッドについて学ぼう
+
++ `03_js_basic/047_array_method/start/main.js`を編集(map)<br>
+
+```js:main.js
+const arry = [10, 20, 30, 40];
+const newArry = [];
+
+for (let i = 0; i < arry.length; i++) {
+  newArry.push(arry[i] * 2);
+}
+
+console.log(newArry); // (4) [20, 40, 60, 80]
+
+// mapメソッド
+const newArry2 = arry.map(val => val * 2);
+
+const newArry3 = arry.map(val => {
+  console.log(val); // 10 20 30 40
+  return val * 3;
+})
+
+const newArry4 = arry.map((val, i, arry) => {
+  console.log(val, i, arry);
+  return val * 4;
+})
+
+console.log(newArry2); // (4) [20, 40, 60, 80]
+console.log(newArry3); // (4) [30, 60, 90, 120]
+console.log(newArry4); // (4) [40, 80, 120, 160]
+```
+
++ `03_js_basic/047_array_method/start/main.js`を編集(filter)<br>
+
+```js:main.js
+const arry = [10, 20, 30, 40];
+const newArry = [];
+
+for (let i = 0; i < arry.length; i++) {
+  const val = arry[i] * 2;
+  if (val > 50) {
+    newArry.push(arry[i] * 2);
+  }
+}
+
+console.log(newArry); // (4) [60, 80]
+
+// mapメソッド
+const newArry2 = arry.map(val => val * 2);
+// filterメソッド
+const newArry3 = newArry2.filter(val => val > 50);
+
+console.log(newArry2)
+console.log(newArry3);  // (4) [60, 80]
+```
+
++ `03_js_basic/047_array_method/start/main.js`を編集(filter)<br>
+
+```js:main.js
+const arry = [10, 20, 30, 40];
+const newArry = [];
+
+for (let i = 0; i < arry.length; i++) {
+  const val = arry[i] * 2;
+  if (val > 50) {
+    newArry.push(arry[i] * 2);
+  }
+}
+
+console.log(newArry); // (4) [60, 80]
+
+// mapメソッドからfilterメソッドを連結する
+const newArry2 = arry.map(val => val * 2).filter(val => val > 50);
+
+console.log(newArry2);  // (4) [60, 80]
+```
