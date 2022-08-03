@@ -154,3 +154,48 @@ function fn(number = 3) {
 debugger;
 print(fn);
 ```
+
++ `03_js_basic/045_eventlistener/start/main.js`を編集<br>
+
+```js:main.js
+const h1Element = document.querySelector('h1');
+// console.log(h1Element); // <h1>開始時点コード</h1>
+console.dir(h1Element); // h1 オブジェクトのプロパティが見れる
+console.log(h1Element.textContent); // 開始時点コード
+h1Element.textContent = '変更後のタイトル';
+```
+
++ `03_js_basic/045_eventlistener/start/main.js`を編集<br>
+
+```js:main.js
+const h1Element = document.querySelector('h1');
+// console.log(h1Element); // <h1>開始時点コード</h1>
+console.dir(h1Element); // h1 オブジェクトのプロパティが見れる
+console.log(h1Element.textContent); // 開始時点コード
+h1Element.textContent = '変更後のタイトル';
+
+const btnEl = document.querySelector('button');
+btnEl.addEventListener('click', (e) => {
+  // console.log(e.target); // <button>クリック</button>
+  // console.dir(e.target); // button要素のDOMオブジェクトが取れる
+  console.dir(e.target.textContent); // クリック
+  console.log('hello'); // クリックする度にconsoleに 'hello'と表示される
+});
+```
+
++ `03_js_basic/045_eventlistener/start/main.js`を編集<br>
+
+```js:main.js
+const h1Element = document.querySelector('h1');
+// console.log(h1Element); // <h1>開始時点コード</h1>
+console.dir(h1Element); // h1 オブジェクトのプロパティが見れる
+console.log(h1Element.textContent); // 開始時点コード
+h1Element.textContent = '変更後のタイトル';
+
+const btnEl = document.querySelector('button');
+const helloFn = (e) => {
+  console.dir(e.target.textContent);
+  console.log('hello')
+}
+btnEl.addEventListener('click', helloFn);
+```
