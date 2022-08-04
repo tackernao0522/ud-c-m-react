@@ -374,3 +374,140 @@ const fnObj = ({ country, state, city }) => {
 fnArr(arr);
 fnObj(objAddress);
 ```
+
+## 16. スプレッド演算子と残余引数について学ぼう
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+const nums = [3, 1, 4, 1, 5, 10, 2, 6];
+
+// const result = Math.max(3, 1, 4, 1, 5, 10, 2, 6);
+const result = Math.max(...nums); // スプレッド演算子
+console.log(result); // 10
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let newArr = [...arr1];
+
+console.log(newArr); // (3) [1, 2, 3]
+console.log(newArr === arr1); // false
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let newArr = [...arr1];
+let newArr1 = arr1;
+
+console.log(newArr1); // (3) [1, 2, 3]
+console.log(newArr1 === arr1); // true
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let newArr = [...arr1];
+let newArr1 = arr1;
+
+newArr1.push(4);
+console.log(newArr1, arr1); //  [1, 2, 3, 4] (4) [1, 2, 3, 4]
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let newArr = [...arr1];
+let newArr1 = arr1;
+
+newArr.push(4);
+console.log(newArr, arr1); // (4) [1, 2, 3, 4] (3) [1, 2, 3]
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let newArr = [...arr1, ...arr2];
+let newArr1 = arr1;
+
+console.log(newArr); // (6) [1, 2, 3, 4, 5, 6]
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let newArr = [...arr1, ...arr2, 10];
+let newArr1 = arr1;
+
+console.log(newArr); // (7) [1, 2, 3, 4, 5, 6, 10]
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let newArr = [...arr1, 10, ...arr2];
+let newArr1 = arr1;
+
+console.log(newArr); // (7) [1, 2, 3, 10, 4, 5, 6]
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+const obj = {
+  name: "Tom",
+  age: 22,
+};
+const newObj = { ...obj };
+
+console.log(newObj); // {name: 'Tom', age: 22}
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+const obj = {
+  name: "Tom",
+  age: 22,
+};
+const newObj = { ...obj };
+newObj.name = 'John';
+console.log(newObj, obj); // {name: 'John', age: 22} {name: 'Tom', age: 22}
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+const restA = (...argA) => console.log(argA); // (3) [1, 3, 4]
+restA(1, 3, 4)
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+const restA = (...argA) => console.log(argA); // (4) [1, 3, 4, 5]
+restA(1, 3, 4, 5)
+```
+
++ `03_js_basic/060_spread_rest/start/main.js`を編集<br>
+
+```js:main.js
+const restB = (n, ...argB) => console.log(argB, n); // (2) [3, 4] 1 n に 1 が入る
+restB(1, 3, 4)
+```
