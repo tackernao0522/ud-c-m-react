@@ -170,3 +170,118 @@ console.log(resultD); // foo
 console.log(resultE); // 2
 console.log(resultF); // foo
 ```
+
+## 19. Promiseについて学ぼう
+
++ `03_js_basic/090_promise/start/main.js`を編集<br>
+
+```js:main.js
+// 同期処理
+let a = 0;
+console.log(a); // 0
+```
+
++ `03_js_basic/090_promise/start/main.js`を編集<br>
+
+```js:main.js
+// 同期処理
+let a = 0;
+console.log(a); // 0
+
+// 非同期処理 (順番通りに処理が行われないのを非同期処理)
+setTimeout(() => {
+  a = 1;
+  console.log(a); // 1 一番後に出力されている(2秒後)
+}, 2000);
+
+console.log(a); // 0 値は変わらない(上書きされていない)
+```
+
++ `03_js_basic/090_promise/start/main.js`を編集<br>
+
+```js:main.js
+let a = 0;
+
+// 非同期処理(Promise)
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    a = 1;
+    resolve();
+  }, 2000);
+}).then(() => {
+  console.log(a); // 1 (2秒後)
+});
+```
+
++ `03_js_basic/090_promise/start/main.js`を編集<br>
+
+```js:main.js
+let a = 0;
+
+// 非同期処理(Promise)
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    a = 1;
+    resolve(a);
+  }, 2000);
+}).then((b) => {
+  console.log(b); // 1 (2秒後)
+});
+```
+
++ `03_js_basic/090_promise/start/main.js`を編集<br>
+
+```js:main.js
+let a = 0;
+
+// 非同期処理(Promise)
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    a = 1;
+    reject(a);
+  }, 2000);
+}).then((b) => {
+  console.log(b); // 1 (2秒後)
+}).catch(() => {
+  console.log('catchが実行'); // catchが実行
+});
+```
+
++ `03_js_basic/090_promise/start/main.js`を編集<br>
+
+```js:main.js
+let a = 0;
+
+// 非同期処理(Promise)
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    a = 1;
+    reject(a); // なんらかのエラーが発生した時に使うコールバックである
+  }, 2000);
+}).then((b) => {
+  console.log(b); // 1 (2秒後)
+}).catch((c) => {
+  console.log('catchが実行', c); // catchが実行 1
+});
+```
+
++ `03_js_basic/090_promise/start/main.js`を編集<br>
+
+```js:main.js
+let a = 0;
+
+// 非同期処理(Promise)
+new Promise((resolve, reject) => {
+  setTimeout(() => {
+    a = 1;
+    resolve(a);
+  }, 2000);
+}).then((b) => {
+  console.log(b); // 1 (2秒後)
+  return b;
+}).then((b) => {
+  console.log(b); // 1
+}).catch((c) => {
+  console.log('catchが実行', c); // catchが実行 1
+});
+```
