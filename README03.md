@@ -285,3 +285,116 @@ new Promise((resolve, reject) => {
   console.log('catchが実行', c); // catchが実行 1
 });
 ```
+
+## 20. await/asyncの使い方について学ぼう
+
++ `03_js_basic/100_async_await/start/main.js`を編集<br>
+
+```js:main.js
+// 非同期処理（Promise）
+let a = 0;
+
+init(); // 0
+function init() {
+    new Promise((resolve, reject) => {
+        setTimeout(() => {
+            a = 1;
+            resolve(a)
+        }, 2000);
+    })
+        console.log(a); // 0 resolveが実行される前にcondole.log(a);が実行されてしまう(thenがないので) 0になる
+    // }).catch((c) => {
+    //     console.log('catchが実行', c)
+    // })
+}
+```
+
++ `03_js_basic/100_async_await/start/main.js`を編集<br>
+
+```js:main.js
+// 非同期処理（Promise）
+let a = 0;
+
+init(); // 0
+async function init() {
+    // async/awaitはresolve が実行されるまで待っているよってconsole.log(a); は 1と出力される
+    await new Promise((resolve, reject) => {
+        setTimeout(() => {
+            a = 1;
+            resolve(a)
+        }, 2000);
+    })
+        console.log(a); // 1
+    // }).catch((c) => {
+    //     console.log('catchが実行', c)
+    // })
+}
+```
+
++ `03_js_basic/100_async_await/start/main.js`を編集<br>
+
+```js:main.js
+// 非同期処理（Promise）
+let a = 0;
+
+init(); // 1
+async function init() {
+    const result = await new Promise((resolve, reject) => {
+        setTimeout(() => {
+            a = 1;
+            resolve(a)
+        }, 2000);
+    })
+        console.log(result); // 1
+    // }).catch((c) => {
+    //     console.log('catchが実行', c)
+    // })
+}
+```
+
++ `03_js_basic/100_async_await/start/main.js`を編集<br>
+
+```js:main.js
+// 非同期処理（Promise）
+let a = 0;
+
+init(); // catchが実行 1
+async function init() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                a = 1;
+                reject(a)
+            }, 2000);
+        })
+        console.log(result);
+    } catch (e) {
+        console.log('catchが実行', e); // catchが実行 1
+    }
+    // }).catch((c) => {
+    //     console.log('catchが実行', c)
+    // })
+}
+```
+
++ `03_js_basic/100_async_await/start/main.js`を編集<br>
+
+```js:main.js
+// 非同期処理（Promise）
+let a = 0;
+
+init(); // catchが実行 1
+async function init() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                a = 1;
+                reject(a)
+            }, 2000);
+        })
+        console.log(result);
+    } catch (e) {
+        console.log('catchが実行', e); // catchが実行 1
+    }
+}
+```
