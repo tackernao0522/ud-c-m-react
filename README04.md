@@ -330,3 +330,41 @@ const Example = () => {
 
 export default Example;
 ```
+
+## 27. [練習] コンポーネントの分割方法
+
++ `04_react_basic/src/073_practice_component/start/components`ディレクトリを作成<br>
+
++ `04_react_basic/src/073_practice_component/start/components/Child.js`コンポーネントを作成<br>
+
++ `04_react_basic/src/073_practice_component/start/components/Child.js`を編集<br>
+
+```js:Child.js
+const Child = () => {
+  return (
+    <div className="component">
+      <h3>Child Component</h3>
+    </div>
+  )
+}
+
+export default Child;
+```
+
++ `04_react_basic/src/073_practice_component/start/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => {
+  return (
+    <div>
+      <h3>練習問題</h3>
+      <p>/componentsフォルダをstart内に作成して、Childにコンポーネントを分離して、Exampleコンポーネントで読み込んでください。</p>
+      <Child />
+    </div>
+  );
+};
+
+export default Example;
+```
