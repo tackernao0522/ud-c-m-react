@@ -196,3 +196,36 @@ export default App;
 + `$ npm install`を実行<br>
 
 + `$ npm start`を実行<br>
+
+## 25. コンポーネントにスタイルを当ててみよう
+
++ `04_react_basic/src/060_styling/start/Example.js`を編集<br>
+
+```js:Example.js
+/**
+ * [注意]レクチャーをプルダウンで選択すると、<head>タグにそのレクチャーでimport "Example.css"のように読み込んだスタイルが挿入されます。このスタイルはプルダウンを切り替えても残りつづけるため、まだcssを記述していないのにスタイルが適用されていると感じた場合にはブラウザを更新してください。
+ */
+import "./Example.css";
+
+const Example = () => {
+  return (
+    <div className="component">
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+
+export default Example;
+```
+
++ `$ touch src/060_styling/start/Example.css`を実行<br>
+
++ `04_react_basic/src/060_styling/start/Example.css`を編集<br>
+
+```css:Example.css
+.componnt {
+  padding: 1rem;
+  color: blue;
+  border: 5px solid blue;
+}
+```
