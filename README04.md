@@ -1,4 +1,4 @@
-セクション4: まずはReactに触れてみよう
+# セクション4: まずはReactに触れてみよう
 
 ## 21. Reactを動かしてみよう
 
@@ -228,4 +228,105 @@ export default Example;
   color: blue;
   border: 5px solid blue;
 }
+```
+
+## 26. コンポーネントの分割方法
+
++ `04_react_basic/src/070_component_nest/start/Example.js`を編集<br>
+
+```js:Example.js
+import "./Example.css";
+
+const Example = () => {
+  return (
+    <div className="component">
+      <h3>Hello Component</h3>
+      <ul>
+        // ul>li{item-$}*5 でenterすると下記のように展開される
+        <li>item-1</li>
+        <li>item-2</li>
+        <li>item-3</li>
+        <li>item-4</li>
+        <li>item-5</li>
+      </ul>
+    </div>
+  );
+};
+
+export default Example;
+```
+
++ `$ mkdir 04_react_basic/src/070_component_nest/start/components && touch $_/List.js`を実行<br>
+
++ `04_react_basic/src/070_component_nest/start/components/List.js`を編集<br>
+
+```js:List.js
+const List = () => {
+  return (
+    <ul>
+      <li>item-1</li>
+      <li>item-2</li>
+      <li>item-3</li>
+      <li>item-4</li>
+      <li>item-5</li>
+    </ul>
+  )
+}
+
+export { List };
+```
+
++ `04_react_basic/src/070_component_nest/start/Example.js`を編集<br>
+
+```js:Example.js
+import { List } from "./components/List";
+import "./Example.css";
+
+const Example = () => {
+  return (
+    <div className="component">
+      <h3>Hello Component</h3>
+      <List />
+    </div>
+  );
+};
+
+export default Example;
+```
+
++ `$ cp 04_react_basic/src/070_component_nest/start/Example.css 04_react_basic/src/070_component_nest/start/components/Child.css`を実行<br>
+
++ `$ cp 04_react_basic/src/070_component_nest/start/Example.js 04_react_basic/src/070_component_nest/start/components/Child.js`を実行<br>
+
++ `04_react_basic/src/070_component_nest/start/components/Child.js`を編集<br>
+
+```js:Child.js
+import "./Child.css";
+import { List } from "./List";
+
+const Child = () => {
+  return (
+    <div className="component">
+      <h3>Hello Component</h3>
+      <List />
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/070_component_nest/start/Example.css`を削除<br>
+
++ `04_react_basic/src/070_component_nest/start/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+
+const Example = () => {
+  return <Child />
+};
+
+export default Example;
 ```
