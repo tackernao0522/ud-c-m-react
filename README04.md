@@ -188,3 +188,11 @@ function App() {
 
 export default App;
 ```
+
+## 24. ★重要★本コースで使用するプロジェクトの使い方
+
++ `$ cd 04_react_basic`を実行<br>
+
++ `$ npm install`を実行<br>
+
++ `$ npm start`を実行<br>
