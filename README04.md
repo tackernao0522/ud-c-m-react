@@ -151,3 +151,40 @@ function Welcome() {
 
 </html>
 ```
+
+## 23. Reactのプロジェクトの作成方法(create-react-appの使い方)
+
+### インストール
+npm i -g create-react-app
+
+### create-react-appドキュメント
+npm docs create-react-app
+
+#### プロジェクトの作成方法
+create-react-app {フォルダ名}
+
++ `$ cd 04_react_basic/extra_src/03_create_react_app`を実行<br>
+
++ `$ sudo npm i -g create-react-app`を実行<br>
+
++ `$ create-react-app sample-react`を実行<br>
+
++ `$ cd sample-react`を実行<br>
+
++ `$ npm start`を実行<br>
+
++ `$ npm run eject`を実行してみる(見えないファイルが可視化される)<br>
+
++ `04_react_basic/extra_src/03_create_react_app/sample-react/src/App.js`を編集<br>
+
+```js:App.js
+import './App.css';
+
+function App() {
+  return (
+    <h1>hello react</h1>
+  );
+}
+
+export default App;
+```
