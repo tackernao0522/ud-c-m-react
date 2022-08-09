@@ -448,3 +448,240 @@ export default Child;
 <Fragment key=""> // 'Fragment'という文字は省略できなくなる
 ```
 
+## 29. JSX内でJSコードを実行してみよう
+
++ `080_expr_in_jsx`ディレクトリに移動<br>
+
++ `$ touch start/components/Expression.jsx`を実行<br>
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+const Expression = () => {
+  return <h3>Hello Exppression</h3>
+}
+
+export default Expression
+```
+
++ `start/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+import Expression from "./components/Expression";
+
+const Example = () => {
+  return (
+    <>
+      <Child />
+      <Expression />
+    </>
+  )
+}
+
+export default Example;
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+const Expression = () => {
+  const title = 'Expression'
+
+  return <h3>Hello {title}</h3>
+}
+
+export default Expression
+```
+
++ `04_react_basic/src/080_expr_in_jsx/start/components/Expression.css`を作成<br>
+
++ `04_react_basic/src/080_expr_in_jsx/start/components/Expression.css`を編集<br>
+
+```css:Expression.css
+.expression {
+  color: green;
+  border: 5px solid green;
+}
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+
+  return (
+    <div className="expression">
+      <h3>Hello {title}</h3>
+    </div>
+  )
+}
+
+export default Expression
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+    </div>
+  )
+}
+
+export default Expression
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+  const arry = ['item1', 'item2', 'item3']
+
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+      <h3>{arry}</h3>
+    </div>
+  )
+}
+
+export default Expression
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+  const arry = ['item1', 'item2', 'item3']
+  const hello = (arg) => `${arg} Function`
+
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+      <h3>{arry}</h3>
+      <h3>{hello('Hello')}</h3>
+    </div>
+  )
+}
+
+export default Expression
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+  const arry = ['item1', 'item2', 'item3']
+  const hello = (arg) => `${arg} Function`
+
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+      <h3>{arry}</h3>
+      <h3>{hello('Hello')}</h3>
+      <h3>{/* 画面上に表示されません */}</h3>
+    </div>
+  )
+}
+
+export default Expression
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+  const arry = ['item1', 'item2', 'item3']
+  const hello = (arg) => `${arg} Function`
+
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+      <h3>{arry}</h3>
+      <h3>{hello('Hello')}</h3>
+      <h3>{/* 画面上に表示されません */}</h3>
+      {<h3>Hello JSX</h3>}
+    </div>
+  )
+}
+
+export default Expression
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+  const arry = ['item1', 'item2', 'item3']
+  const hello = (arg) => `${arg} Function`
+  const jsx = <h3>Hello JSX</h3>
+
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+      <h3>{arry}</h3>
+      <h3>{hello('Hello')}</h3>
+      <h3>{/* 画面上に表示されません */}</h3>
+      {<h3>Hello JSX</h3>}
+      {jsx}
+    </div>
+  )
+}
+
+export default Expression
+```
+
++ `start/components/Expression.jsx`を編集<br>
+
+```jsx:Expression.jsx
+import './Expression.css';
+
+const Expression = () => {
+  const title = 'Expression'
+  const arry = ['item1', 'item2', 'item3']
+  const hello = (arg) => `${arg} Function`
+  const jsx = <h3>Hello JSX</h3>
+  const bool = true
+
+  console.log(jsx)
+
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+      <h3>{arry}</h3>
+      <h3>{hello('Hello')}</h3>
+      <h3>{/* 画面上に表示されません */}</h3>
+      {<h3>Hello JSX</h3>}
+      {jsx}
+      {bool} // 出力されない
+    </div>
+  )
+}
+
+export default Expression
+```
