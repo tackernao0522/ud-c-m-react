@@ -313,3 +313,217 @@ const Child = ({ color : c = 'green' }) => {
 
 export default Child;
 ```
+
+## 33. propsにいろいろな値を渡してみよう
+
++ `04_react_basic/src/090_props/start/components/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => {
+  return (
+    <>
+      <Child num={123} />
+      {/* <Child color="red" /> */}
+    </>
+  )
+}
+
+export default Example;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = ({ color: c = 'green', num }) => {
+
+  return (
+    <div className={`component ${c}`}>
+      <h3>Hello Component</h3>
+      <h3>{num}</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/090_props/start/components/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => {
+  const hello = (arg) => `Hello ${arg}`
+  return (
+    <>
+      <Child num={123} fn={hello} />
+      {/* <Child color="red" /> */}
+    </>
+  )
+}
+
+export default Example;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = ({ color: c = 'green', num, fn }) => {
+
+  return (
+    <div className={`component ${c}`}>
+      <h3>Hello Component</h3>
+      <h3>{num}</h3>
+      <h3>{fn('Props')}</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/090_props/start/components/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => {
+  const hello = (arg) => `Hello ${arg}`
+
+  return (
+    <>
+      <Child
+        num={123}
+        fn={hello}
+        bool
+      />
+      <Child
+        num={123}
+        fn={hello}
+      />
+      {/* <Child color="red" /> */}
+    </>
+  )
+}
+
+export default Example;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = ({ color: c = 'green', num, fn, bool }) => {
+
+  return (
+    <div className={`component ${c}`}>
+      <h3>Hello Component</h3>
+      <h3>{num}</h3>
+      <h3>{fn('Props')}</h3>
+      <h3>{bool ? 'true' : 'false'}</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/090_props/start/components/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => {
+  const hello = (arg) => `Hello ${arg}`
+
+  return (
+    <>
+      <Child
+        num={123}
+        fn={hello}
+        bool
+        obj={{ name: 'Tom', age: 18 }}
+      />
+      {/* <Child color="red" /> */}
+    </>
+  )
+}
+
+export default Example;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = ({ color: c = 'green', num, fn, bool, obj }) => {
+
+  return (
+    <div className={`component ${c}`}>
+      <h3>Hello Component</h3>
+      <h3>{num}</h3>
+      <h3>{fn('Props')}</h3>
+      <h3>{bool ? 'true' : 'false'}</h3>
+      <h3>{obj.name + obj.age}</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/090_props/start/components/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => {
+  const hello = (arg) => `Hello ${arg}`
+  const o = {
+    color: "red",
+    num: 123
+  }
+
+  return (
+    <>
+      <Child
+        {...o} // propsとして子に記述する必要なし
+        fn={hello}
+        bool
+        obj={{ name: 'Tom', age: 18 }}
+      />
+      {/* <Child color="red" /> */}
+    </>
+  )
+}
+
+export default Example;
+```

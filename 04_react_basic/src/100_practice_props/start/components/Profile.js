@@ -1,9 +1,9 @@
 import "./Profile.css";
 
-const Profile = (props) => {
+const Profile = ({name}) => {
   return (
     <div className="profile">
-
+      {`Name: ${name}`}
     </div>
   );
 };
