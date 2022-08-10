@@ -1,9 +1,11 @@
 import "./Profile.css";
 
-const Profile = ({name}) => {
+const Profile = ({ name = 'John Doe', age = '??', country = 'Japan' }) => {
   return (
     <div className="profile">
-      {`Name: ${name}`}
+      <h3>{`Name: ${name}`}</h3>
+      <h3>{`Age: ${age}`}</h3>
+      <h3>{`From: ${country}`}</h3>
     </div>
   );
 };
