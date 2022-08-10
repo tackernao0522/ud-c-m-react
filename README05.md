@@ -157,3 +157,159 @@ const Example = () => {
 
 export default Example;
 ```
+
+## 32. propsでコンポーネントに値を渡してみよう
+
++ `04_react_basic/src/090_props/start/components/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => <Child color="red" />;
+
+export default Example;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.css`を編集<br>
+
+```css:Child.css
+.App-start .component {
+  padding: 1rem;
+  color: blue;
+  border: 5px solid blue;
+}
+
+.App-start .component.red {
+  padding: 1rem;
+  color: red;
+  border: 5px solid red;
+}
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = (props) => {
+  console.log(props); // {color: 'red'}
+
+  return (
+    <div className={`component ${props.color}`}>
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/090_props/start/components/Example.js`を編集<br>
+
+```js:Example.js
+import Child from "./components/Child";
+
+const Example = () => {
+  return (
+    <>
+      <Child />
+      <Child color="red" />
+    </>
+  )
+}
+
+export default Example;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集(propsの分割代入)<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = ({ color }) => {
+
+  return (
+    <div className={`component ${color}`}>
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.css`を編集<br>
+
+```css:Child.css
+.App-start .component {
+  padding: 1rem;
+  color: blue;
+  border: 5px solid blue;
+}
+
+.App-start .component.red {
+  padding: 1rem;
+  color: red;
+  border: 5px solid red;
+}
+
+.App-start .component.green {
+  padding: 1rem;
+  color: green;
+  border: 5px solid green;
+}
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集(propsの分割代入)<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = ({ color = 'green' }) => {
+
+  return (
+    <div className={`component ${color}`}>
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
+
++ `04_react_basic/src/090_props/start/components/Child.js`を編集(propsの分割代入)<br>
+
+```js:Child.js
+/* POINT 式と文
+式：何らかの値を返すもの（変数に代入できるもの）
+文：変数宣言、for文、if文、switch文やセミコロンで区切るもの。
+*/
+
+import "./Child.css";
+
+const Child = ({ color : c = 'green' }) => {
+
+  return (
+    <div className={`component ${c}`}>
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+
+export default Child;
+```
