@@ -422,3 +422,154 @@ console.log(Example());
 
 export default Example;
 ```
+
+## 39. セクションまとめ
+
+### JSX(JavaScript Syntax Extension)
+
+ReactによるJavaScriptの構文を拡張したもの。<br>
+JSXはJSのオブジェクトに変換される。<br>
+
+`<h1>Hello, world!</h1>`; => JSオブジェクト(React要素)<br>
+
+### JSXがオブジェクトに変換される過程
+
+```jsx:Sample.jsx
+const element = (
+  <h1 className="greeting">
+    Hello World
+  </h1>
+);
+```
+
+↓(Babel)<br>
+
+```js:sample.js
+const element = React.createElement(
+  'h1',
+  {className: 'greeting'}
+  'Hello World',
+);
+```
+
+↓<br>
+
+```js:Sample.js
+const element = {
+  type: 'h1',
+  props: {
+    className: 'greeting',
+    children: 'Hello World'
+  }
+};
+```
+
+↑<br>
+
+React要素<br>
+
+### React要素のレンダー
+
+ReactDOMが仮想DOMを元にDOMを更新する。<br>
+
++ `sample.html`<br>
+
+```html:sample.html
+<div id="app"></div>
+```
+
+↑ マウント（利用可能な状態にする）<br>
+
+```js:Sample.js
+const element = <h1>Hello!</h1>
+const root = ReactDOM.createRoot(
+  document.getElementById('app')
+);
+root.render(element)
+```
+
+##### ReactDOM
+
+React要素のツリー<br>
+
+↓<br>
+
+`html`（DOM)<br>
+
+### コンポーネントの定義 (Defining a component)
+
+コンポーネントはJavaScriptの関数として定義する。<br>
+
+```js:Sample.js
+function Welcome(props) {
+  return <h1>Hello {props.name}</h1>;
+}
+```
+
+↓<br>
+
+```js:Sample.js
+<Welcome name="Tom" />
+```
+
+関数で定義されるコンポーネントは`__関数コンポーネント__`と呼ばれる。<br>
+
+### 関数コンポーネント（Function Component)
+
+関数コンポーネントは `propsを受け取り、JSXを返す。`<br>
+
+↓<br>
+
++ 再利用性の向上（コードが使いまわせる）<br>
++ 可読性の向上（コードが整理される）<br>
++ 疎結合になる（バグを減らせる）<br>
+
+### コンポーネントの親子関係
+
+コンポーネントは出力するJSXの中に他のコンポーネントを含めることができる。<br>
+
+```js:App.js
+function App() {
+  return (
+    <div>
+      <Welcome name="Bob" />
+      <Welcome name="Tom" />
+      <Welcome name="Lisa" />
+    </div>
+  )
+}
+```
+
+`コンポーネントツリー`<br>
+
+### コンポーネント間のデータのやり取り
+
+コンポーネントはpropsを親から子に渡すことでデータを受け渡す。<br>
+propsを通してJavaScriptのあらゆる値を渡すことができる。<br>
+
+`propsの流れは一方通行`<br>
+propsを子から親に渡すことはできない。<br>
+
+`propsは読み取り専用`<br>
+コンポーネント内でpropsの値を変更してはいけない。<br>
+
+### React要素とコンポーネント
+
+```js:Sample.js
+const Bye = () => <h2>GoodBye!</h2>
+const Hello = () => <h1>Hello</h1>
+const Example = () => {
+  return (
+    <div>
+      <Hello />
+      <Bye />
+    </div>
+  )
+}
+```
+
+`<Example>` => React要素 その下は `React要素のツリー`(React内部で保持されるデータ構造により近い形)<br>
+
+### コンポーネントツリー
+
+`React要素のツリー` (コンポーネント部分のみ抽出)=> `コンポーネントツリー`<br>
