@@ -275,3 +275,117 @@ const Hello = (props) => {
 
 export default Hello;
 ```
+
+## 37. JSXの正体
+
++ [Babel](https://babeljs.io/repl#?browsers=defaults%2C%20not%20ie%2011%2C%20not%20ie_mob%2011&build=&builtIns=false&corejs=3.21&spec=false&loose=false&code_lz=DwEwlgbgfAUABAxTgAsCMUASBTANrgewEJgB6dWJKuVAJigHECCQ4AXAuAZ22zgE8CAVwB0ZFPXhUy4aEA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=false&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=env%2Creact%2Cstage-2%2Ctypescript&prettier=false&targets=&version=7.18.3&externalPlugins=&assumptions=%7B%7D)<br>
+
++ `04_react_basic/src/130_whats_jsx/start/Example.js`を編集<br>
+
+```js:Example.js
+import React from "react";
+
+const Example = () => {
+  const sample1 = <h1 className="greeting">Hello World</h1>;
+
+  console.log(sample1);
+
+  console.log(React.createElement("h1", {
+    className: "greeting"
+  }, "Hello World")); // (console.log(sample1))と同じ結果になる
+
+  // Babelに`<h1 className="greeting">Hello World</h1>`を打ち込むと。。。
+  // React.createElement("h1", {
+  //   className: "greeting"
+  // }, "Hello World");
+
+  const sample2 = (
+    <div>
+      <h1>Hello!</h1>
+      <h2>Good to see you.</h2>
+    </div>
+  );
+
+  console.log(
+    (
+      <div>
+        <h1>Hello!</h1>
+        <h2>Good to see you.</h2>
+      </div>
+    ).props
+  );
+
+  return React.createElement(
+    "div",
+    null,
+    React.createElement("h1", null, "Hello!"),
+    React.createElement("h2", null, "Good to see you.")
+  );
+};
+
+export default Example;
+```
+
++ `04_react_basic/src/130_whats_jsx/start/Example.js`を編集<br>
+
+```js:Example.js
+import React from "react";
+
+const Example = () => {
+  const sample1 = <h1 className="greeting">Hello World</h1>;
+
+  console.log(sample1);
+
+  console.log(React.createElement("h1", {
+    className: "greeting"
+  }, "Hello World")); // (console.log(sample1))と同じ結果になる
+
+  // Babelに`<h1 className="greeting">Hello World</h1>`を打ち込むと。。。
+  // React.createElement("h1", {
+  //   className: "greeting"
+  // }, "Hello World");
+
+  // 結果
+  // React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "Hello!"),
+  // React.createElement("h2", null, "Good to see you."));
+
+  const sample2 = (
+    <div>
+      <h1>Hello!</h1>
+      <h2>Good to see you.</h2>
+    </div>
+  );
+
+  console.log(sample2);
+
+  // 第2引数nullの部分はpropsが入ってくる 第3引数のタグの中身には文字列が入る
+  React.createElement("div", null,
+    React.createElement("h1", null, "Hello!"),
+    React.createElement("h2", null, "Good to see you.")
+  );
+
+  // Babelに下記コードを貼り付けてみる
+  //  <div>
+  //   <h1>Hello!</h1>
+  //   <h2>Good to see you.</h2>
+  // </div >
+
+  console.log(
+    (
+      <div>
+        <h1>Hello!</h1>
+        <h2>Good to see you.</h2>
+      </div>
+    ).props
+  );
+
+  return React.createElement(
+    "div",
+    null,
+    React.createElement("h1", null, "Hello!"),
+    React.createElement("h2", null, "Good to see you.")
+  );
+};
+
+export default Example;
+```
