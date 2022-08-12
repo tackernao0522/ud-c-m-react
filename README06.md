@@ -215,3 +215,63 @@ const Container = ({ title, first, second }) => {
 
 export default Container;
 ```
+
+## 36. propsの重要なルール
+
++ `04_react_basic/src/120_props_rules/start/Example.js`を編集<br>
+
+```js:Example.js
+// POINT propsの流れは一方通行
+// POINT propsは読み取り専用
+
+import Bye from "./components/Bye"
+import Hello from "./components/Hello"
+
+const Example = () => {
+  // POINT propsの流れは一方通行
+  const name = 'Tom';
+
+  return (
+    <>
+      <Hello name={name} />
+      <Bye name={name} />
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `04_react_basic/src/120_props_rules/start/components/Hello.js`を編集(propsは読み取り専用)<br>
+
+```js:Hello.js
+const Hello = (props) => {
+  props.name = 'Bob'; // 更新できない TypeError: Cannot assign to read only property 'name' of object '#<Object>'となる
+  console.log(props.name);
+  return (
+    <div>
+      <h3>Hello {props.name}</h3>
+    </div>
+  );
+};
+
+export default Hello;
+```
+
++ `04_react_basic/src/120_props_rules/start/components/Hello.js`を編集(propsは読み取り専用)<br>
+
+```js:Hello.js
+const Hello = (props) => {
+  // props.name = 'Bob';
+  const desc= Reflect.getOwnPropertyDescriptor(props, 'name');
+  console.log(desc); // {value: 'Tom', writable: false, enumerable: true, configurable: false} writableはfalseになっていて書き込み不可になっている
+  // console.log(props.name);
+  return (
+    <div>
+      <h3>Hello {props.name}</h3>
+    </div>
+  );
+};
+
+export default Hello;
+```
