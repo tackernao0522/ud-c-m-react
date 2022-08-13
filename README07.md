@@ -244,3 +244,55 @@ export default Example;
 
 ※ JavaScriptの onchangeはFocusから外れたときに発火する oninputは変更があったときに発火する<br>
 ※ Reactの onChangeはJaveScriptの oninputと同じ挙動である違いがある<br>
+
+## 43. イベントに合わせて画面表示を更新してみよう
+
++ `020_useState/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const valArry = useState('hello')
+  // console.log(valArry)
+
+  return (
+    <>
+      <input
+        type="text"
+        onChange={(e) => {
+          const setFn = valArry[1]
+          setFn(e.target.value)
+        }}
+      />{' '}
+      = {valArry[0]}
+    </>
+  )
+}
+
+export default Example
+```
+
++ `020_useState/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const [val, setVal] = useState()
+
+  return (
+    <>
+      <input
+        type="text"
+        onChange={(e) => {
+          setVal(e.target.value)
+        }}
+      />{' '}
+      = {val}
+    </>
+  )
+}
+
+export default Example
+```
