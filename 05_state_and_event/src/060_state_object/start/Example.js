@@ -4,10 +4,12 @@ const Example = () => {
   const personObj = { name: 'Tom', age: 18 }
   const [person, setPerson] = useState(personObj)
   const changeName = (e) => {
-    setPerson({ name: e.target.value, age: person.age })
+    console.log({ ...person } === person) // false よって新しい別のオブジェクトが生成されていることになる
+    console.log({ ...person })
+    setPerson({ ...person, name: e.target.value, age: 20 }) // 新しいオブジェクトが生成されることになる
   }
   const changeAge = (e) => {
-    setPerson({ name: person.name, age: e.target.value })
+    setPerson({ ...person, age: e.target.value }) // 新しいオブジェクトが生成されることになる
   }
   const reset = () => {
     setPerson({ name: '', age: '' })

@@ -200,3 +200,110 @@ const Example = () => {
 
 export default Example
 ```
+
+## 50. [重要] オブジェクトのステートは新しいオブジェクトを設定する！
+
++ `05_state_and_event/src/060_state_object/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const personObj = { name: 'Tom', age: 18 }
+  const [person, setPerson] = useState(personObj)
+  const changeName = (e) => {
+    setPerson({ name: e.target.value, age: person.age }) // 新しいオブジェクトが生成されることになる
+  }
+  const changeAge = (e) => {
+    setPerson({ name: person.name, age: e.target.value })　// 新しいオブジェクトが生成されることになる
+  }
+  const reset = () => {
+    setPerson({ name: '', age: '' })
+  }
+
+  return (
+    <>
+      <h3>Name:{person.name}</h3>
+      <h3>Age:{person.age}</h3>
+      <input type="text" value={person.name} onChange={changeName} />
+      <input type="number" value={person.age} onChange={changeAge} />
+      <div>
+        <button onClick={reset}>リセット</button>
+      </div>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `05_state_and_event/src/060_state_object/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const personObj = { name: 'Tom', age: 18 }
+  const [person, setPerson] = useState(personObj)
+  const changeName = (e) => {
+    console.log({ ...person } === person) // false よって新しい別のオブジェクトが生成されていることになる
+    console.log({ ...person })
+    setPerson({ ...person, name: e.target.value }) // 新しいオブジェクトが生成されることになる
+  }
+  const changeAge = (e) => {
+    setPerson({ ...person, age: e.target.value }) // 新しいオブジェクトが生成されることになる
+  }
+  const reset = () => {
+    setPerson({ name: '', age: '' })
+  }
+
+  return (
+    <>
+      <h3>Name:{person.name}</h3>
+      <h3>Age:{person.age}</h3>
+      <input type="text" value={person.name} onChange={changeName} />
+      <input type="number" value={person.age} onChange={changeAge} />
+      <div>
+        <button onClick={reset}>リセット</button>
+      </div>
+    </>
+  )
+}
+
+export default Example
+```
++ `05_state_and_event/src/060_state_object/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const personObj = { name: 'Tom', age: 18 }
+  const [person, setPerson] = useState(personObj)
+  const changeName = (e) => {
+    console.log({ ...person } === person) // false よって新しい別のオブジェクトが生成されていることになる
+    console.log({ ...person })
+    setPerson({ ...person, name: e.target.value, age: 20 }) // 新しいオブジェクトが生成されることになる
+  }
+  const changeAge = (e) => {
+    setPerson({ ...person, age: e.target.value }) // 新しいオブジェクトが生成されることになる
+  }
+  const reset = () => {
+    setPerson({ name: '', age: '' })
+  }
+
+  return (
+    <>
+      <h3>Name:{person.name}</h3>
+      <h3>Age:{person.age}</h3>
+      <input type="text" value={person.name} onChange={changeName} />
+      <input type="number" value={person.age} onChange={changeAge} />
+      <div>
+        <button onClick={reset}>リセット</button>
+      </div>
+    </>
+  )
+}
+
+export default Example
+```
