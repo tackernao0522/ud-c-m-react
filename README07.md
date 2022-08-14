@@ -331,3 +331,91 @@ export default Example;
 
 ※ useStateが実行されるたびにExample関数が実行される<br>
 
+## 46. [複数のステート] ステート使用時の注意点！
+
++ `05_state_and_event/src/src/040_multiple_state/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(10)
+  const [countC, setCountC] = useState(100)
+
+  return (
+    <>
+      <p>{`ボタンAを${countA}回押しました！`}</p>
+      <button
+        onClick={() => {
+          setCountA(countA + 1)
+        }}
+      >
+        ボタンA
+      </button>
+      <p>{`ボタンBを${countB}回押しました！`}</p>
+      <button
+        onClick={() => {
+          setCountB(countB + 1)
+        }}
+      >
+        ボタンB
+      </button>
+      <p>{`ボタンCを${countC}回押しました！`}</p>
+      <button
+        onClick={() => {
+          setCountC(countC + 1)
+        }}
+      >
+        ボタンC
+      </button>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `05_state_and_event/src/src/040_multiple_state/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  console.log(<Example />)
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(10)
+  const [countC, setCountC] = useState(100)
+
+  return (
+    <>
+      <p>{`ボタンAを${countA}回押しました！`}</p>
+      <button
+        onClick={() => {
+          setCountA(countA + 1)
+        }}
+      >
+        ボタンA
+      </button>
+      <p>{`ボタンBを${countB}回押しました！`}</p>
+      <button
+        onClick={() => {
+          setCountB(countB + 1)
+        }}
+      >
+        ボタンB
+      </button>
+      <p>{`ボタンCを${countC}回押しました！`}</p>
+      <button
+        onClick={() => {
+          setCountC(countC + 1)
+        }}
+      >
+        ボタンC
+      </button>
+    </>
+  )
+}
+
+export default Example
+```
