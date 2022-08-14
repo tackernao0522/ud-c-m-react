@@ -216,3 +216,59 @@ const Count = ({ title }) => {
 
 export default Example;
 ```
+
+## 54. ステートを複数のコンポーネントで管理しよう！
+
++ `05_state_and_event/src/080_state_and_props/start/Example.js`を編集(コンポーネントが消滅した後も値を保持し続ける方法)<br>
+
+```js:Example.js
+import { useState } from "react";
+
+
+const Example = () => {
+  // 親からStateを渡す
+  const [toggle, setToggle] = useState(true);
+  const [countA, setCountA] = useState(0);
+  const [countB, setCountB] = useState(0);
+  const toggleComponent = () => {
+    setToggle(prev => !prev);
+  }
+  return (
+    <>
+      <button onClick={toggleComponent}>toggle</button>
+      {toggle ? (
+        <Count
+          key="A"
+          title="A"
+          count={countA}
+          setCount={setCountA}
+        />
+      ) : (
+        <Count
+          key="B"
+          title="B"
+          count={countB}
+          setCount={setCountB}
+        />
+      )}
+    </>
+  )
+}
+const Count = ({ title, count, setCount }) => {
+  const countUp = () => {
+    setCount((prevstate) => prevstate + 1);
+  };
+  const countDown = () => {
+    setCount(count - 1);
+  };
+  return (
+    <>
+      <h3>{title}: {count}</h3>
+      <button onClick={countUp}>+</button>
+      <button onClick={countDown}>-</button>
+    </>
+  );
+};
+
+export default Example;
+```
