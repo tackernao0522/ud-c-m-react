@@ -296,3 +296,38 @@ const Example = () => {
 
 export default Example
 ```
+## 44. [重要] ステートとは？
+
+復習しておく<br>
+
+## 45. [重要] ステートとレンダリングの仕組み
+
++ `05_state_and_event/src/src/030_useState_render/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  // let displayVal;
+  let [ val, setVal ] = useState();
+  console.log('再レンダリングされました');
+  return (
+    <>
+      <input
+        type="text"
+        onChange={(e) => {
+          console.log(e.target.value);
+          setVal(e.target.value);
+          // displayVal = e.target.value;
+        }}
+      />
+      = {val}
+    </>
+  );
+};
+
+export default Example;
+```
+
+※ useStateが実行されるたびにExample関数が実行される<br>
+
