@@ -272,3 +272,43 @@ const Count = ({ title, count, setCount }) => {
 
 export default Example;
 ```
+
+## 55. [練習] ステートの受け渡し
+
++ `05_state_and_event/src/090_practice_state_props/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <h3>練習問題</h3>
+      <p>カウントの更新（CountUpdate）と表示（CountResult）を別のコンポーネントに分離してください。Exampleコンポーネント内で現在のカウントの値を管理するstateを一つ定義してこれまでのレクチャーで実装したようなカウンターを作成してください。</p>
+      <CountResult title="カウント" count={count} />
+      <CountUpdate setCount={setCount} />
+    </>
+  );
+};
+
+const CountResult = ({ count, title }) => <h3>{title}:{count}</h3>
+
+const CountUpdate = ({ setCount }) => {
+  const countUp = () => {
+    setCount((prevstate) => prevstate + 1)
+  };
+  const countDown = () => {
+    setCount((prevstate) => prevstate - 1)
+  };
+  return (
+    <>
+      <button onClick={countUp}>+</button>
+      <button onClick={countDown}>-</button>
+    </>
+  );
+};
+
+export default Example;
+```
