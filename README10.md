@@ -385,3 +385,399 @@ const Example = () => {
 
 export default Example;
 ```
+
+## 63. 条件分岐を設ける方法まとめ
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => {
+            if (animal === "Dog") {
+              return <li key={animal}>{animal}★</li>
+            } else {
+              return <li key={animal}>{animal}</li>
+            }
+          })
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(三項演算子1)<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => (
+            animal === "Dog" ? <li key={animal}>{animal}★</li> : (
+              <li key={animal}>{animal}</li>
+            )
+          ))
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(三項演算子2)<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => {
+            return <li key={animal}>
+              {
+                animal === "Dog"
+                  ? animal + "★"
+                  : animal
+              }
+            </li>
+          })
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(三項演算子3)<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => (
+            <li key={animal}>
+              {animal === "Dog" ? animal + "★" : animal}
+            </li>
+          ))
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(三項演算子4)<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => (
+            <li key={animal}>
+              {
+                animal + (animal === "Dog"
+                ? "★"
+                : "")
+              }
+            </li>
+          ))
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(三項演算子4)falseという文字列が出てしまう<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => {
+            return <li key={animal}>
+              {
+                animal + (animal === "Dog" && "★")
+              }
+            </li>
+          })
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(三項演算子5)<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => {
+            return <li key={animal}>
+              {
+                animal
+              }{animal === "Dog" && "★"}
+            </li>
+          })
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(三項演算子6)<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1;
+            console.log(animal.indexOf(filterVal));
+            return isMatch;
+          })
+          .map((animal) => (
+            <li key={animal}>
+              {animal}{animal === "Dog" && "★"}
+            </li>
+          ))
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(Null合体演算子)null or undefinedの時<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", null, "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const animalStr = animal ?? ""
+            const isMatch = animalStr.indexOf(filterVal) !== -1;
+            return isMatch;
+          })
+          .map((animal) => (
+            <li key={animal}>
+              {animal}{animal === "Dog" && "★"}
+            </li>
+          ))
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/060_conditional_render/start/Example.js`を編集(Null合体演算子)null or undefinedの時2<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Example = () => {
+  const animals = ["Dog", "Cat", null, "Rat"];
+
+  const [filterVal, setFilterVal] = useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        value={filterVal}
+        onChange={(e) => setFilterVal(e.target.value)}
+      />
+      <ul>
+        {animals
+          .filter((animal) => {
+            const animalStr = animal ?? ""
+            const isMatch = animalStr.indexOf(filterVal) !== -1;
+            return isMatch;
+          })
+          .map((animal) => (
+            <li key={animal}>
+              {animal ?? "null,udefinedでした"}{animal === "Dog" && "★"}
+            </li>
+          ))
+        }
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
