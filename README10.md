@@ -286,9 +286,10 @@ const Example = () => {
       <input type="text" value={filterVal} onChange={(e) => setFilterVal(e.target.value)} />
       <ul>
         {animals
-          .filter((animal) => (
-            animal.indexOf(filterVal) !== -1
-          ))
+          .filter((animal) => {
+            const isMatch = animal.indexOf(filterVal) !== -1
+            return isMatch;
+        })
           .map((animal) => (
             <li key={animal}>{animal}</li>
           ))}
@@ -324,6 +325,58 @@ const Example = () => {
           })
           .map((animal) => (
             <li key={animal}>{animal}</li>
+          ))}
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
+## 62. [練習] フィルターメソッドの使い方を練習してみよう
+
++ `06_control_and_form/src/050_practice_filter/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+import Profile from "./components/Profile";
+
+const persons = [
+  {
+    name: "Geo",
+    age: 18,
+    hobbies: ["sports", "music"],
+  },
+  {
+    name: "Tom",
+    age: 25,
+    hobbies: ["movie", "music"],
+  },
+  {
+    name: "Lisa",
+    age: 21,
+    hobbies: ["sports", "travel", "game"],
+  },
+];
+
+const Example = () => {
+  const [filterVal, setFilterVal] = useState("")
+  return (
+    <>
+      <h3>練習問題</h3>
+      <p>入力欄を設置して、入力値と名前が一致したもののみ表示する仕組みを作成してください。</p>
+      <input type="text" value={filterVal} onChange={(e) => setFilterVal(e.target.value)} />
+      <ul>
+        {persons
+          .filter((person) => {
+            const isMath = person.name.indexOf(filterVal) !== -1
+            return isMath
+          })
+          .map((person) => (
+            <li key={person.name}>
+              <Profile {...person} />
+            </li>
           ))}
       </ul>
     </>
