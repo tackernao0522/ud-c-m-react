@@ -5,7 +5,7 @@ const Example = () => {
 
   const [val, setVal] = useState("");
   const clearVal = () => setVal("");
-  
+
   return (
     <div>
       <label htmlFor="456">ラベル</label>
