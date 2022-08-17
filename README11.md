@@ -241,3 +241,35 @@ const Example = () => {
 
 export default Example;
 ```
+
+## 67. [Form] チェックボックスの作成方法
+
++ `06_control_and_form/src/100_single_checkbox/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Example = () => {
+  const [isChecked, setIsChecked] = useState(true)
+
+  return (
+    <>
+      <p style={{ textAlign: 'center' }}>
+        startフォルダの内容が表示されます。
+        <br />
+        練習用に使ってください！
+      </p>
+      <label htmlFor="my-check">チェック：</label>
+      <input
+        type="checkbox"
+        id="mycheck"
+        checked={isChecked}
+        onChange={() => setIsChecked(!isChecked)}
+      />
+      <div>{isChecked ? 'On!' : 'OFF!'}</div>
+    </>
+  )
+}
+
+export default Example
+```
