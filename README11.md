@@ -376,3 +376,344 @@ const Example = () => {
 
 export default Example
 ```
+
+## 70. Todoアプリを作ってみよう
+
++ [nanoid](https://github.com/ai/nanoid#readme)<br>
+
++ `$ mkdir 06_control_and_form/src/130_reminder/start/components && touch $_/{List.jsx,Form.jsx`を実行<br>
+
++ $ mv 06_control_and_form/src/130_reminder/start/components 06_control_and_form/src/130_reminder/start/components/Todo.jsx`を実行<br>
+
++ `06_control_and_form/src/130_reminder/start/components/Form.jsx`を編集<br>
+
+```jsx:Form.jsx
+const Form = () => {
+  return <div>Form.jsx</div>
+}
+
+export default Form
+```
+
++ `06_control_and_form/src/130_reminder/start/components/List.jsx`を編集<br>
+
+```jsx:List.jsx
+export const List = () => {
+  return <div>List.js</div>
+}
+```
+
++ `06_control_and_form/src/130_reminder/start/Example.js`を編集<br>
+
+```js:Example.js
+import { Todo } from "./components/Todo";
+
+const Example = () => {
+  return (
+    <>
+      <h2>Reminder</h2>
+      <Todo />
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `06_control_and_form/src/130_reminder/start/components/Todo.jsx`を編集<br>
+
+```jsx:Todo.jsx
+import { useState } from "react";
+import Form from "./Form";
+import { List } from "./List";
+
+export const Todo = () => {
+  const todosList = [
+    {
+      id: 1,
+      content: "店予約する",
+    },
+    {
+      id: 2,
+      content: "卵買う",
+    },
+    {
+      id: 3,
+      content: "郵便出す",
+    },
+  ];
+
+  const [todos, setTodos] = useState(todosList)
+
+  return (
+    <>
+      <List todos={todos} />
+      <Form />
+    </>
+  )
+};
+```
+
++ `06_control_and_form/src/130_reminder/start/components/List.jsx`を編集<br>
+
+```jsx:List.jsx
+export const List = ({ todos }) => {
+
+  return (
+    <div>
+      {todos.map((todo) => (
+        <div key={todo.id}>
+          <button onClick={complete}>完了</button>
+          <span>{todo.content}</span>
+        </div>
+      ))}
+      <div>
+
+      </div>
+    </div>
+  )
+}
+```
+
++ `06_control_and_form/src/130_reminder/start/components/Todo.jsx`を編集<br>
+
+```jsx:Todo.jsx
+import { useState } from 'react'
+import Form from './Form'
+import { List } from './List'
+
+export const Todo = () => {
+  const todosList = [
+    {
+      id: 1,
+      content: '店予約する',
+    },
+    {
+      id: 2,
+      content: '卵買う',
+    },
+    {
+      id: 3,
+      content: '郵便出す',
+    },
+  ]
+
+  const [todos, setTodos] = useState(todosList)
+
+  const deleteTodo = (id) => {
+    const newTodos = todos.filter((todo) => {
+      return todo.id !== id
+    })
+    setTodos(newTodos)
+  }
+
+  return (
+    <>
+      <List todos={todos} deleteTodo={deleteTodo} />
+      <Form />
+    </>
+  )
+}
+```
+
++ `06_control_and_form/src/130_reminder/start/components/List.jsx`を編集<br>
+
+```jsx:List.jsx
+export const List = ({ todos, deleteTodo }) => {
+  const complete = (id) => deleteTodo(id)
+
+  return (
+    <div>
+      {todos.map((todo) => (
+        <div key={todo.id}>
+          <button onClick={() => complete(todo.id)}>完了</button>
+          <span>{todo.content}</span>
+        </div>
+      ))}
+      <div></div>
+    </div>
+  )
+}
+```
+
++ `06_control_and_form/src/130_reminder/start/components/Form.jsx`を編集<br>
+
+```jsx:Form.jsx
+import { useState } from "react"
+
+const Form = () => {
+  const [enteredTodo, setEnteredTodo] = useState('')
+
+  const addTodo = (e) => {
+    const inputVal = e.target.value
+    const newTodo = {
+      id: Math.floor(Math.random() * 1e5),
+      content: inputVal
+    }
+  }
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={enteredTodo}
+        onChange={(e) => setEnteredTodo(e.target.value)}
+      />
+      <button onClick={addTodo}>追加</button>
+      {/* <span>{enteredTodo}</span> */}
+    </div>
+  )
+}
+
+export default Form
+```
+
++ `06_control_and_form/src/130_reminder/start/components/Todo.jsx`を編集<br>
+
+```jsx:Todo.jsx
+import { useState } from 'react'
+import Form from './Form'
+import { List } from './List'
+
+export const Todo = () => {
+  const todosList = [
+    {
+      id: 1,
+      content: '店予約する',
+    },
+    {
+      id: 2,
+      content: '卵買う',
+    },
+    {
+      id: 3,
+      content: '郵便出す',
+    },
+  ]
+
+  const [todos, setTodos] = useState(todosList)
+
+  const deleteTodo = (id) => {
+    const newTodos = todos.filter((todo) => {
+      return todo.id !== id
+    })
+    setTodos(newTodos)
+  }
+
+  const createTodo = (todo) => {
+    setTodos([...todos, todo])
+  }
+
+  return (
+    <>
+      <List todos={todos} deleteTodo={deleteTodo} />
+      <Form createTodo={createTodo} />
+    </>
+  )
+}
+```
+
++ `06_control_and_form/src/130_reminder/start/components/Form.jsx`を編集<br>
+
+```jsx:Form.jsx
+import { useState } from "react"
+
+const Form = ({createTodo}) => {
+  const [enteredTodo, setEnteredTodo] = useState('')
+
+  const addTodo = () => {
+    const newTodo = {
+      id: Math.floor(Math.random() * 1e5),
+      content: enteredTodo
+    }
+
+    createTodo(newTodo)
+  }
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={enteredTodo}
+        onChange={(e) => setEnteredTodo(e.target.value)}
+      />
+      <button onClick={addTodo}>追加</button>
+      {/* <span>{enteredTodo}</span> */}
+    </div>
+  )
+}
+
+export default Form
+```
+
++ `06_control_and_form/src/130_reminder/start/components/Form.jsx`を編集<br>
+
+```jsx:Form.jsx
+import { useState } from 'react'
+
+const Form = ({ createTodo }) => {
+  const [enteredTodo, setEnteredTodo] = useState('')
+
+  const addTodo = () => {
+    const newTodo = {
+      id: Math.floor(Math.random() * 1e5),
+      content: enteredTodo,
+    }
+
+    createTodo(newTodo)
+  }
+
+  return (
+    <div>
+      <form onSubmit={addTodo}>
+        <input
+          type="text"
+          value={enteredTodo}
+          onChange={(e) => setEnteredTodo(e.target.value)}
+        />
+        <button>追加</button>
+        {/* <span>{enteredTodo}</span> */}
+      </form>
+    </div>
+  )
+}
+
+export default Form
+```
+
++ `06_control_and_form/src/130_reminder/start/components/Form.jsx`を編集<br>
+
+```jsx:Form.jsx
+import { useState } from 'react'
+
+const Form = ({ createTodo }) => {
+  const [enteredTodo, setEnteredTodo] = useState('')
+
+  const addTodo = (e) => {
+    e.preventDefault()
+    const newTodo = {
+      id: Math.floor(Math.random() * 1e5),
+      content: enteredTodo,
+    }
+
+    createTodo(newTodo)
+    setEnteredTodo('')
+  }
+
+  return (
+    <div>
+      <form onSubmit={addTodo}>
+        <input
+          type="text"
+          value={enteredTodo}
+          onChange={(e) => setEnteredTodo(e.target.value)}
+        />
+        <button>追加</button>
+        {/* <span>{enteredTodo}</span> */}
+      </form>
+    </div>
+  )
+}
+
+export default Form
+```
