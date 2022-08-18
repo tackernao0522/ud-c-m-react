@@ -15,6 +15,9 @@ const Example = () => {
     border: 'none',
     margin: 'auto',
     background: isSelected ? 'pink' : '',
+    // ::before, ::after, :hover, :active 擬似要素はインラインスタイルでは使用できない
+    // メディアクエリも使用できない @media (min-width: 600px) { }
+    // インラインスタイルはパフォーマンスが良くないのであまり使用されない
   }
 
   return (
