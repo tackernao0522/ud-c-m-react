@@ -1,3 +1,10 @@
+# セクション7: スタイリング
+
+## 72. インラインスタイルの使い方！
+
++ `07_styling_component/src/010_inline_style/start/Example.js`を編集<br>
+
+```js:Example.js
 import { useState } from 'react'
 
 const Example = () => {
@@ -30,3 +37,4 @@ const Example = () => {
 }
 
 export default Example
+```
