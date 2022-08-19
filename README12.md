@@ -246,3 +246,199 @@ export default Example
 ```
 
 + 上記のやり方だと両方ともオレンジになってしまう(画面全体に適用されるCSSになっている)<br>
+
+## 75. CSS Modulesを使ったスタイリング
+
++ [CSS Modules将来非推奨](https://github.com/webpack-contrib/css-loader/issues/1050)<br>
+
++ `07_styling_component/src/030_css_module/start/Example.css`を`Example.module.css`にリネーム<br>
+
++ `07_styling_component/src/030_css_module/start/components/SubButton.css`を`SubButton.module.css`にリネーム<br>
+
++ `07_styling_component/src/030_css_module/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from "react";
+
+import SubButton from "./components/SubButton";
+import styles from "./Example.module.css" // 編集
+
+console.log(styles)
+const Example = () => {
+  const [isSelected, setIsSelected] = useState(false);
+
+  const clickHandler = () => setIsSelected((prev) => !prev);
+
+  return (
+    <>
+      <button className={`btn ${isSelected ? "selected" : ""}`} onClick={clickHandler}>
+        ボタン
+      </button>
+      <SubButton />
+      <div style={{ textAlign: "center" }}>
+        {isSelected && "クリックされました。"}
+      </div>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `07_styling_component/src/030_css_module/start/components/SubButton.js`を編集<br>
+
+```js:SubButton.js
+import "./SubButton.module.css";
+
+const SubButton = () => {
+    return <button className="btn">サブボタン</button>
+}
+export default SubButton;
+```
+
++ `07_styling_component/src/030_css_module/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from "react";
+
+import SubButton from "./components/SubButton";
+import styles from "./Example.module.css"
+
+const Example = () => {
+  const [isSelected, setIsSelected] = useState(false);
+
+  const clickHandler = () => setIsSelected((prev) => !prev);
+
+  return (
+    <>
+      <button className={`${styles.btn} ${isSelected ? styles.selected : ""}`} onClick={clickHandler}>
+        ボタン
+      </button>
+      <SubButton />
+      <div style={{ textAlign: "center" }}>
+        {isSelected && "クリックされました。"}
+      </div>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `07_styling_component/src/030_css_module/start/components/SubButton.js`を編集<br>
+
+```js:SubButton.js
+import styles from "./SubButton.module.css";
+
+const SubButton = () => {
+    return <button className={styles.btn}>サブボタン</button>
+}
+export default SubButton;
+```
+
++ `07_styling_component/src/030_css_module/start/Example.module.css`を編集<br>
+
+```css:Example.module.css
+.btn {
+    margin: auto;
+    border-radius: 9999px;
+    border: none;
+    display: block;
+    width: 120px;
+    height: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    background: orange;
+}
+
+.btn:hover {
+    background-color: red;
+}
+
+.selected {
+    background-color: pink;
+}
+```
+
++ `07_styling_component/src/030_css_module/start/Example.module.css`を編集<br>
+
+```css:Example.module.css
+.btn {
+    margin: auto;
+    border-radius: 9999px;
+    border: none;
+    display: block;
+    width: 120px;
+    height: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    background: orange;
+}
+
+.btn:hover {
+    background-color: red;
+}
+
+.btn:active {
+    background-color: purple;
+}
+
+.selected {
+    background-color: pink;
+}
+```
+
++ `07_styling_component/src/030_css_module/start/Example.module.css`を編集<br>
+
+```css:Example.module.css
+.btn {
+    margin: auto;
+    border-radius: 9999px;
+    border: none;
+    display: block;
+    width: 120px;
+    height: 60px;
+    font-weight: bold;
+    cursor: pointer;
+    background: orange;
+}
+
+.btn:hover {
+    background-color: red;
+}
+
+.btn:active {
+    background-color: purple;
+}
+
+/* こう書くと他のボタンまで反映されてしまう */
+/* button {
+  background: green;
+} */
+
+.selected {
+    background-color: pink;
+}
+
+#idAttr {
+    background-color: blue;
+}
+
+@media (max-width: 600px) {
+    .btn {
+        border-radius: 0;
+    }
+}
+```
+
++ `07_styling_component/src/030_css_module/start/components/SubButton.js`を編集<br>
+
+```js:SubButton.js
+import styles from "./SubButton.module.css";
+
+const SubButton = () => {
+    // 基本的にはidはあまり使わない方がよい
+    return <button id={styles.idAttr} className={styles.btn}>サブボタン</button>
+}
+export default SubButton;
+```

@@ -10,6 +10,24 @@
     background: orange;
 }
 
+.btn:hover {
+    background-color: red;
+}
+
+.btn:active {
+    background-color: purple;
+}
+
+/* #idAttr {
+    background-color: blue;
+} */
+
 .selected {
     background-color: pink;
+}
+
+@media (max-width: 600px) {
+    .btn {
+        border-radius: 0;
+    }
 }
