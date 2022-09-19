@@ -1,6 +1,19 @@
+# セクション8: ReactでDOM操作を行う方法
+
+## 84. [createPortal] モーダルの作り方
+
+### ポータル(Portal)
+
+```
+ポータルの子要素を、直接の親要素ではなく別のDOM要素にマウントすることができる。
+```
+
++ `08_other_function/src/010_prtals/start/Example.js`を編集<br>
+
+```js:Example.js
 import { useState } from "react";
 import Modal from "./components/Modal";
-import { createPortal} from "react-dom"
+import { createPortal} from "react-dom" // 追加
 
 /* POINT createPortalの使い方
 第一引数: React の子要素としてレンダー可能なもの （要素、文字列、フラグメント、コンポーネントなど）
@@ -13,10 +26,12 @@ import { createPortal} from "react-dom"
 それらの制限なく、子要素が親要素を「飛び出して」表示する必要があるときにcreatePortalを使うのが有効です。
 モーダル、ポップアップ、トーストは使用の代表例です。
 */
+// 追加
 const ModalPortal = ({ children }) => {
   const target = document.querySelector('.container.start')
   return createPortal(children, target)
 }
+// ここまで
 
 const Example = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,13 +46,16 @@ const Example = () => {
       >
         モーダルを表示する
       </button>
+      // 編集
       {modalOpen && (
         <ModalPortal>
           <Modal handleCloseClick={() => setModalOpen(false)} />
         </ModalPortal>
       )}
+      ここまで
     </div>
   );
 };
 
 export default Example;
+```
