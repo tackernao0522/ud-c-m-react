@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from "./components/Modal";
-import { createPortal} from "react-dom"
+import { createPortal } from "react-dom"
 
 /* POINT createPortalの使い方
 第一引数: React の子要素としてレンダー可能なもの （要素、文字列、フラグメント、コンポーネントなど）
@@ -21,8 +21,8 @@ const ModalPortal = ({ children }) => {
 const Example = () => {
   const [modalOpen, setModalOpen] = useState(false);
   return (
-    <div>
-      <div className="container start"></div>
+    <div onClick={() => console.log('空のdiv')}>
+      <div className="container start" onClick={() => console.log('container')}></div>
 
       <button
         type="button"
