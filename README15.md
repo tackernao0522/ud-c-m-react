@@ -278,3 +278,71 @@ const Example = () => {
 
 export default Example;
 ```
+
+## 88. [useRef] refで動画プレイヤーを作成してみよう
+
++ `08_other_function/src/030_useRef/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useRef, useState } from 'react'
+
+const Case1 = () => {
+  const [value, setValue] = useState('')
+  const inputRef = useRef()
+  // console.log(inputRef)
+
+  return (
+    <div>
+      <h3>ユースケース1</h3>
+      <input
+        type="text"
+        ref={inputRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <button onClick={() => inputRef.current.focus()}>
+        インプット要素をフォーカスする
+      </button>
+    </div>
+  )
+}
+
+// 追加
+const Case2 = () => {
+  const [playing, setPlaying] = useState(false)
+  const videoRef = useRef()
+
+  return (
+    <div>
+      <video style={{ maxWidth: '100%' }} ref={videoRef}>
+        <source src="./sample.mp4"></source>
+      </video>
+      <button
+        onClick={() => {
+          if (playing) {
+            videoRef.current.pause()
+          } else {
+            videoRef.current.play()
+          }
+          // setPlaying(!playing)
+          setPlaying(prev => !prev)
+        }}
+      >
+        {playing ? 'Stop' : 'Play'}
+      </button>
+    </div>
+  )
+}
+// ここまで
+
+const Example = () => {
+  return (
+    <>
+      <Case1 />
+      <Case2 /> // 追加
+    </>
+  )
+}
+
+export default Example
+```
