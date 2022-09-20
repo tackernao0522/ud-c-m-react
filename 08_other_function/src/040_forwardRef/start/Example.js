@@ -1,15 +1,19 @@
-import { useRef, forwardRef } from "react";
+import { useRef, forwardRef } from 'react'
+
+const Input = forwardRef((props, ref) => {
+  return <input type="text" ref={ref} />
+})
 
 const Example = () => {
-  const ref = useRef();
+  const ref = useRef()
   return (
     <>
-      <input type="text" ref={ref} />
+      <Input ref={ref} />
       <button onClick={() => ref.current.focus()}>
         インプット要素をフォーカスする
       </button>
     </>
-  );
-};
+  )
+}
 
-export default Example;
+export default Example

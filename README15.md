@@ -474,3 +474,52 @@ const Example = () => {
 
 export default Example
 ```
+
+## 90. [forwardRef] 他のコンポーネントのDOMにアクセスする方法
+
++ 08_other_function/src/040_forwardRef/start/Example.js`を編集(一つ目の方法)<br>
+
+```js:Example.js
+import { useRef } from "react";
+
+const Input = ({ customeRef }) => {
+  return <input type="text" ref={customeRef} />
+}
+const Example = () => {
+  const ref = useRef();
+  return (
+    <>
+      <Input customeRef={ref} />
+      <button onClick={() => ref.current.focus()}>
+        インプット要素をフォーカスする
+      </button>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ 08_other_function/src/040_forwardRef/start/Example.js`を編集(二つ目の方法)<br>
+
+```js:Example.js
+import { useRef, forwardRef } from 'react' // 編集
+
+const Input = forwardRef((props, ref) => { // 編集
+  return <input type="text" ref={ref} /> // 編集
+})
+
+const Example = () => {
+  const ref = useRef()
+  return (
+    <>
+      <Input ref={ref} />
+      <button onClick={() => ref.current.focus()}>
+        インプット要素をフォーカスする
+      </button>
+    </>
+  )
+}
+
+export default Example
+```
