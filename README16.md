@@ -1,3 +1,10 @@
+## 91. [useImperativeHandle] refへのアクセスを限定する方法 (あまり使わない方が良い)
+
++ `useImperativeHandle`は子コンポーネントで使用する<br>
+
++ `08_other_function/src/050_useImperativeHandle/start/Example.js`を編集<br>
+
+```js:Example.js
 import { useRef, forwardRef, useImperativeHandle } from 'react'
 
 /* POINT forwardRef
@@ -31,3 +38,4 @@ const Example = () => {
 }
 
 export default Example
+```
