@@ -346,3 +346,131 @@ const Example = () => {
 
 export default Example
 ```
+
+## 89. [useRef] refとは？ refとstateの違い
+
+### useRefとは
+
+```
+再レンダリングを発生させず値を保持する方法
+```
+
+`const ref = useRef(initialValue)`<br>
+
++ useRefは "refオブジェクト"を返す<br>
+
++ cuurentプロパティに値が設定される<br>
+
++ ref.currentで値にアクセスできる。値は読み書き可能<br>
+
+### refの特徴
+
++ 再レンダリングされても情報が保存される。<br>
+(※通常の変数はレンダリングの度に初期化される)<br>
+
++ refの値を変更しても再レンダリングがトリガーされない<br>
+(※同じく値を保持できるstateは変更されると再レンダリングされる)<br>
+
++ refオブジェクトをJSXのref属性に渡すとそのDOMにアクセスできるようになる<br>
+
+↓<br>
+
+`最も一般的な利用法`<br>
+
++ `08_other_function/src/030_useRef/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useRef, useState } from 'react'
+
+const Case1 = () => {
+  const [value, setValue] = useState('')
+  const inputRef = useRef()
+  // console.log(inputRef)
+
+  return (
+    <div>
+      <h3>ユースケース1</h3>
+      <input
+        type="text"
+        ref={inputRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <button onClick={() => inputRef.current.focus()}>
+        インプット要素をフォーカスする
+      </button>
+    </div>
+  )
+}
+
+const Case2 = () => {
+  const [playing, setPlaying] = useState(false)
+  const videoRef = useRef()
+
+  return (
+    <div>
+      <h3>ユースケース2</h3>
+      <video style={{ maxWidth: '100%' }} ref={videoRef}>
+        <source src="./sample.mp4"></source>
+      </video>
+      <button
+        onClick={() => {
+          if (playing) {
+            videoRef.current.pause()
+          } else {
+            videoRef.current.play()
+          }
+          // setPlaying(!playing)
+          setPlaying((prev) => !prev)
+        }}
+      >
+        {playing ? 'Stop' : 'Play'}
+      </button>
+    </div>
+  )
+}
+
+// 追加
+const createTimeStamp = () => new Date().getTime()
+
+const Case3 = () => {
+  const [timeStamp, setValue] = useState(createTimeStamp())
+  const ref = useRef(createTimeStamp())
+
+  const updateState = () => {
+    setValue(createTimeStamp())
+  }
+
+  const updateRef = () => {
+    /* コンソールを見るとブラウザの表示と、ref.currentの中身が異なることを確認できます */
+    ref.current = createTimeStamp()
+    console.log('ref.current -> ', ref.current)
+  }
+  return (
+    <div>
+      <h3>ユースケース3</h3>
+      <p>
+        state: {timeStamp}
+        <button onClick={updateState}>更新</button>
+      </p>
+      <p>
+        ref: {ref.current}
+        <button onClick={updateRef}>更新</button>
+      </p>
+    </div>
+  )
+}
+// ここまで
+
+const Example = () => {
+  return (
+    <>
+      <Case1 />
+      <Case2 />
+      <Case3 /> // 追加
+    </>
+  )
+}
+
+export default Example
+```

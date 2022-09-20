@@ -27,6 +27,7 @@ const Case2 = () => {
 
   return (
     <div>
+      <h3>ユースケース2</h3>
       <video style={{ maxWidth: '100%' }} ref={videoRef}>
         <source src="./sample.mp4"></source>
       </video>
@@ -38,11 +39,41 @@ const Case2 = () => {
             videoRef.current.play()
           }
           // setPlaying(!playing)
-          setPlaying(prev => !prev)
+          setPlaying((prev) => !prev)
         }}
       >
         {playing ? 'Stop' : 'Play'}
       </button>
+    </div>
+  )
+}
+
+const createTimeStamp = () => new Date().getTime()
+
+const Case3 = () => {
+  const [timeStamp, setValue] = useState(createTimeStamp())
+  const ref = useRef(createTimeStamp())
+
+  const updateState = () => {
+    setValue(createTimeStamp())
+  }
+
+  const updateRef = () => {
+    /* コンソールを見るとブラウザの表示と、ref.currentの中身が異なることを確認できます */
+    ref.current = createTimeStamp()
+    console.log('ref.current -> ', ref.current)
+  }
+  return (
+    <div>
+      <h3>ユースケース3</h3>
+      <p>
+        state: {timeStamp}
+        <button onClick={updateState}>更新</button>
+      </p>
+      <p>
+        ref: {ref.current}
+        <button onClick={updateRef}>更新</button>
+      </p>
     </div>
   )
 }
@@ -52,6 +83,7 @@ const Example = () => {
     <>
       <Case1 />
       <Case2 />
+      <Case3 />
     </>
   )
 }
