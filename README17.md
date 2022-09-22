@@ -252,3 +252,30 @@ export default Example;
 + ●をクリックして`完了`をクリックして`111`を入力してみる ●をクリックして停止すると 棒グラフが５個表示されていて再レンダリングが5回行われたことがわかる<br>
 
 + この時に変更された内容が閲覧できる<br>
+
+## 98. Google検索の仕方
+
++ `mutataion observer`で検索<br>
+
++ `mutataion observer after:2021`で検索(2021年以降の記事が検索される)で検索<br>
+
++ https://developer.mozilla.org/ja/docs/Web/API/MutationObserver の MDNのみのサイトを表示したい場合には<br>
+
++ `mutation observer site:https://developer.mozilla.org` として検索してみる(MDNのサイトの記事のみ抜粋される)<br>
+
++ 逆にsiteを含めたくない場合には `mutation observer -site:https://developer.mozilla.org` と `-site`にして検索をかける(MDNのサイト関係がフィルターされる)<br>
+
++ キーワードで関連させる `mutation observer -JavaScript`と検索(JavaScriptという検索キーワードは除外される)<br>
+
++ 必ず含めたいキーワードの場合 `mutation observer "tommorow" で検索<br>
+
++ ブラウザコンソールを出して<br>
+
+```:console
+"".someFn() // Enter これはエラーを出すための例である
+
+VM474:1 Uncaught TypeError: "".someFn is not a function // このエラーメッセージを検索したい場合
+    at <anonymous>:1:4
+```
+
++ `Uncaught TypeError: * is not a function` ワイルドカードを入れて検索する<br>
