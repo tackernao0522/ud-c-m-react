@@ -226,3 +226,29 @@ export default Example;
 + 再度 `↑`(step out)ボタンを押すと `Exampleコンポーネント`に戻る<br>
 
 + `Call Stack`は元々Javascriptが実行されてきた経路になる<br>
+
+## 97. React Developer Toolsの使い方
+
+### components
+
++ `<>`の部分の`View souce for this element`を押すとソースコードが確認できる<br>
+
++ `目玉みたいなマーク`(Inspect the matching DOM element)を押すとHTML上のどのDOMに位置するのかというのを確認することができる<br>
+
++ `歯車マーク`を押して => `Highlight updates when components render.`にチェックを入れるとレンダリングが発生したコンポーネントがブラウザに青い枠線で表示される(不必要なレンダリングが発生していないか確認したりする)<br>
+
++ `09_debugging/src/030_devtool_reminder/start/Example.js`を編集<br>
+
+### Profiler
+
++ どのコンポーネントのレンダリングにどのくらいの時間がかかったのか表すタグになる<br>
+
++ ●ボタンを押すとRecoredが開始され、`完了`をクリックして ●ボタンを押して停止する<br>
+
++ 薄い灰色になっている場所は再レンダリングが発生しなかった場所になる<br>
+
++ `Todo`や`List`部分のグラフをクリックするとどれくらいの秒数がかかったとか表示されるようになっている<br>
+
++ ●をクリックして`完了`をクリックして`111`を入力してみる ●をクリックして停止すると 棒グラフが５個表示されていて再レンダリングが5回行われたことがわかる<br>
+
++ この時に変更された内容が閲覧できる<br>
