@@ -192,3 +192,130 @@ const Example = () => {
 
 export default Example
 ```
+
+## 102. 純粋関数
+
++ `10_functional_programming/src/020_pure_function/start/Example.js`を編集(純粋関数である場合)<br>
+
+```js:Example.js
+const Example = () => {
+  // 関数型 (純粋関数)
+  // ・ fn(決まった引数) -> 決まった戻り値
+  // ・ 関数外の状態 (データ)は参照・変更しない。
+  // ・ 関数外に影響を及ぼさない。
+  // ・ 引数で渡された値を変更しない。
+  // 上記の要件を満たさない操作は「副作用」と呼ぶ。
+
+  const val1 = 2,
+    val2 = 3
+  const add = (val1, val2) => {
+    return val1 + val2
+  }
+
+  return (
+    <>
+      <h3>純粋関数</h3>
+      <p>fn(決まった引数) には 決まった戻り値 を返す</p>
+
+      <div>純粋関数:{add(val1, val2)}</div>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `10_functional_programming/src/020_pure_function/start/Example.js`を編集(純粋関数ではない場合 2つ目の要件ではなくなる)<br>
+
+```js:Example.js
+const Example = () => {
+  // 関数型 (純粋関数)
+  // ・ fn(決まった引数) -> 決まった戻り値
+  // ・ 関数外の状態 (データ)は参照・変更しない。
+  // ・ 関数外に影響を及ぼさない。
+  // ・ 引数で渡された値を変更しない。
+  // 上記の要件を満たさない操作は「副作用」と呼ぶ。
+
+  const val1 = 2,
+    val2 = 3
+  const add = (val1) => { // 編集
+    return val1 + val2 // val2は const val2を参照することになるため純粋ではなくなる
+  }
+
+  return (
+    <>
+      <h3>純粋関数</h3>
+      <p>fn(決まった引数) には 決まった戻り値 を返す</p>
+
+      <div>純粋関数:{add(val1)}</div> // 編集
+    </>
+  )
+}
+
+export default Example
+```
+
++ `10_functional_programming/src/020_pure_function/start/Example.js`を編集(純粋関数ではない場合 3つ目の要件にならないので純粋ではない)<br>
+
+```js:Example.js
+const Example = () => {
+  // 関数型 (純粋関数)
+  // ・ fn(決まった引数) -> 決まった戻り値
+  // ・ 関数外の状態 (データ)は参照・変更しない。
+  // ・ 関数外に影響を及ぼさない。
+  // ・ 引数で渡された値を変更しない。
+  // 上記の要件を満たさない操作は「副作用」と呼ぶ。
+
+  const val1 = 2,
+    val2 = 3;
+  let result; // 追加
+  const add = (val1) => {
+    result = val1 + val2; // 追加
+    return val1 + val2
+  }
+
+  return (
+    <>
+      <h3>純粋関数</h3>
+      <p>fn(決まった引数) には 決まった戻り値 を返す</p>
+
+      <div>純粋関数:{add(val1)}</div>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `10_functional_programming/src/020_pure_function/start/Example.js`を編集(純粋関数ではない場合 3つ目の要件にならないので純粋ではない)<br>
+
+```js:Example.js
+const Example = () => {
+  // 関数型 (純粋関数)
+  // ・ fn(決まった引数) -> 決まった戻り値
+  // ・ 関数外の状態 (データ)は参照・変更しない。
+  // ・ 関数外に影響を及ぼさない。
+  // ・ 引数で渡された値を変更しない。
+  // 上記の要件を満たさない操作は「副作用」と呼ぶ。
+
+  const val1 = 2,
+    val2 = 3;
+  let result;
+  const add = (val1) => {
+    console.log(val1); // このような場合も副作用となり純粋ではなくなる
+    result = val1 + val2;
+    return val1 + val2
+  }
+
+  return (
+    <>
+      <h3>純粋関数</h3>
+      <p>fn(決まった引数) には 決まった戻り値 を返す</p>
+
+      <div>純粋関数:{add(val1)}</div>
+    </>
+  )
+}
+
+export default Example
+```
