@@ -319,3 +319,149 @@ const Example = () => {
 
 export default Example
 ```
+
+## 103. 普遍性（immutability) [Part.1]
+
++ `10_functional_programming/src/030_immutability/start/Example.js`を編集<br>
+
+```js:Example.js
+const Example = () => {
+  const num = { val: 2 }
+  const double = (num) => {
+    num.val = num.val * 2
+    return num
+  }
+  const newNum = double(num)
+  console.log(newNum)
+
+  return (
+    <>
+      <h3>不変性（Immutability）</h3>
+      <p>引数で渡ってきたオブジェクトを変更しない！</p>
+    </>
+  );
+};
+
+export default Example;
+```
+
+```:result
+{val: 4}
+Example.js:18 newNum {val: 4} num {val: 2}
+Example.js:19 false
+```
+
++ `10_functional_programming/src/030_immutability/start/Example.js`を編集<br>
+
+```js:Example.js
+const Example = () => {
+  const num = { val: 2 }
+  const double = (num) => {
+    num.val = num.val * 2
+    return num
+  }
+  const newNum = double(num)
+  console.log('newNum', newNum, 'num', num) // 編集
+
+  return (
+    <>
+      <h3>不変性（Immutability）</h3>
+      <p>引数で渡ってきたオブジェクトを変更しない！</p>
+    </>
+  );
+};
+
+export default Example;
+```
+
+```:result
+newNum {val: 4} num {val: 4} # 引数で渡された値が変更されている状態になってしまっている(Immutableではない 純粋関数の要件から外れている)
+```
+
++ `10_functional_programming/src/030_immutability/start/Example.js`を編集<br>
+
+```js:Example.js
+const Example = () => {
+  const num = { val: 2 }
+
+  const double = (num) => {
+    const newNum = {} // 追加
+    newNum.val = num.val * 2 // 編集
+    return newNum
+  }
+
+  const newNum = double(num)
+  console.log('newNum', newNum, 'num', num)
+
+  return (
+    <>
+      <h3>不変性（Immutability）</h3>
+      <p>引数で渡ってきたオブジェクトを変更しない！</p>
+    </>
+  )
+}
+
+export default Example
+```
+
+```
+newNum {val: 4} num {val: 2} # numは値が変更されてなくて値が保持されている状態である(純粋関数の要件に沿っている)
+```
+
++ `10_functional_programming/src/030_immutability/start/Example.js`を編集<br>
+
+```js:Example.js
+const Example = () => {
+  const num = { val: 2 }
+
+  const double = (num) => {
+    // この書き方でもよい
+    const newNum = { val: num.val * 2 }
+    return newNum
+    // ここまで
+  }
+
+  const newNum = double(num)
+  console.log('newNum', newNum, 'num', num)
+
+  return (
+    <>
+      <h3>不変性（Immutability）</h3>
+      <p>引数で渡ってきたオブジェクトを変更しない！</p>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `10_functional_programming/src/030_immutability/start/Example.js`を編集<br>
+
+```js:Example.js
+const Example = () => {
+  const num = { val: 2 }
+
+  const double = (num) => {
+    const newNum = { val: num.val * 2 }
+    return newNum
+  }
+
+  const newNum = double(num)
+  console.log('newNum', newNum, 'num', num)
+  console.log(newNum === num) // 追加
+
+  return (
+    <>
+      <h3>不変性（Immutability）</h3>
+      <p>引数で渡ってきたオブジェクトを変更しない！</p>
+    </>
+  )
+}
+
+export default Example
+```
+
+```:result
+newNum {val: 4} num {val: 2}
+Example.js:19 false # 新しいオブジェクトが生成されていることになる
+```

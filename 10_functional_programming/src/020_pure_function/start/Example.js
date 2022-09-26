@@ -8,6 +8,7 @@ const Example = () => {
 
   const val1 = 2,
     val2 = 3;
+    // eslint-disable-next-line no-unused-vars
     let result;
     const add = (val1) => {
     console.log(val1);
