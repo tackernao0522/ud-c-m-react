@@ -364,3 +364,9 @@ export default Example
 ・ モジュール化の向上
 ・ Tree Shakingの向上
 ```
+
+## 109. JavaScriptコードと見比べてみよう
+
++ `10_functional_programming/src/070_js_react/start/Example.js`はJavaScriptで書いたコード<br>
+
++ `10_functional_programming/src/070_js_react/end/*`はReactで書いたコード<br>
