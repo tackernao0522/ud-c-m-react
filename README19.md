@@ -73,3 +73,90 @@ function(val) {
 ↓（アウトプット）<br>
 
 `[1, 2, 3]`（新しい配列！）<br>
+
+## 105. Reactと純粋関数
+
++ `10_functional_programming/src/040_react_pure_fn/start/Example.js`を編集(1)<br>
+
+```js:Example.js
+let value = 0; // 関数の外の変数
+
+const Child = () => {
+
+}
+
+const Example = () => {
+
+  return (
+    <>
+    // 関数の外側で定義された変数を使用してはいけない
+    <div>{value}</div>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `10_functional_programming/src/040_react_pure_fn/start/Example.js`を編集(2)<br>
+
+```js:Example.js
+let value = 0
+
+const Child = () => {
+  value++ // 追加
+  return <div>{value}</div> // 追加
+}
+
+const Example = () => {
+  return (
+    <>
+      // 純粋関数というのは特定の引数には対しては必ず同じ戻り値を返さなければならないが。。。
+      // 引数を指定していないのでそれぞれ違った戻り値を返してしまっている。
+      // 大きいプロジェクトになるとバグがどこに混入しているのはわからなくなってしまう。
+      // よってReactではこのようなコードは許可されていない
+      <Child /> // 1
+      <Child /> // 2
+      <Child /> // 3
+    </>
+  )
+}
+
+export default Example
+```
+
++ `10_functional_programming/src/040_react_pure_fn/start/Example.js`を編集(3 Reactの正しい書き方)<br>
+
+```js:Example.js
+let value = 0
+
+const Child = () => {
+  value++
+  return <div>{value}</div>
+}
+
+// 追加
+// propsを受け取ると純粋関数になる
+const ChildPure = ({ value }) => {
+  return <div>{value}</div>
+}
+// ここまで
+
+const Example = () => {
+  let value = 0
+
+  return (
+    <>
+      <Child />
+      <Child />
+      <Child />
+      // propsを渡すことによって同じ戻り値を渡せる
+      <ChildPure value={++value} /> // 1
+      <ChildPure value={++value} /> // 2
+      <ChildPure value={++value} /> // 3
+    </>
+  )
+}
+
+export default Example
+```
