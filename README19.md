@@ -192,3 +192,150 @@ const Example = () => {
 
 export default Example;
 ```
+
+## 107. Reactにおける不変性
+
++ `10_functional_programming/src/060_react_immutability/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from "react";
+
+const Child = (props) => {
+  // props.state = { value: 1 } エラーになる propsに保持されたプロパティは変更できないようになっている
+  const {state, setState} = props
+  setState({ value: 1 }) // 再レンダリングの無限ループに陥る
+  return (
+    <>
+      <span>{state.value}</span>
+    </>
+  );
+};
+
+const Example = () => {
+  const [ state, setState ] = useState({ value: 0 });
+
+  return (
+    <>
+      <div>
+        <Child state={state} setState={setState} />
+      </div>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `10_functional_programming/src/060_react_immutability/start/Example.js`を編集(再レンダリング無限ループ防止対応)<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Child = (props) => {
+  // props.state = { value: 1 } エラーになる propsに保持されたプロパティは変更できないようになっている
+  const { state, setState } = props
+  // 追加
+  const increment = () => {
+    setState((state) => ({ value: state.value + 1 }))
+  }
+  // ここまで
+  return (
+    <>
+      <span>{state.value}</span>
+      <button onClick={increment}>+</button> // 追加
+    </>
+  )
+}
+
+const Example = () => {
+  const [state, setState] = useState({ value: 0 })
+
+  return (
+    <>
+      <div>
+        <Child state={state} setState={setState} />
+      </div>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `10_functional_programming/src/060_react_immutability/start/Example.js`を編集(再レンダリング無限ループ防止対応)-2<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+const Child = (props) => {
+  // props.state = { value: 1 } エラーになる propsに保持されたプロパティは変更できないようになっている
+  const { state, setState } = props
+  const increment = () => {
+    setState(prev => ({ value: prev.value + 1 }))
+  }
+  return (
+    <>
+      <span>{state.value}</span>
+      <button onClick={increment}>+</button>
+    </>
+  )
+}
+
+const Example = () => {
+  const [state, setState] = useState({ value: 0 })
+
+  return (
+    <>
+      <div>
+        <Child state={state} setState={setState} />
+      </div>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `10_functional_programming/src/060_react_immutability/start/Example.js`を編集(再レンダリング無限ループ防止対応)-3<br>
+
+```js:Example.js
+import { useState } from 'react'
+
+// 関数型 (純粋関数)
+// ・ fn(決まった引数) -> 決まった戻り値
+// ・ 関数外の状態（データ）は参照・変更しない。
+// ・ 関数外に影響を及ぼさない。
+// ・ 引数で渡された値を変更しない。(★Immutability)
+const Child = (props) => {
+  // props.state = { value: 1 } エラーになる propsに保持されたプロパティは変更できないようになっている
+  const { state, setState } = props
+  const increment = () => {
+    // 編集
+    setState(prev => {
+      const newState = { value: prev.value + 1 }
+      return newState
+    })
+    // ここまで
+  }
+  return (
+    <>
+      <span>{state.value}</span>
+      <button onClick={increment}>+</button>
+    </>
+  )
+}
+
+const Example = () => {
+  const [state, setState] = useState({ value: 0 })
+
+  return (
+    <>
+      <div>
+        <Child state={state} setState={setState} />
+      </div>
+    </>
+  )
+}
+
+export default Example
+```
