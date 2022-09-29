@@ -366,3 +366,66 @@ const Example = () => {
 
 export default Example
 ```
+
+## 113. useReducer と useStateの違い(関数型プログラミング視点)
+
++ `11_hooks_p1/src/020_useReducer_pros/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useReducer, useState } from 'react'
+
+// useState:状態の更新の仕方は利用側に託す。
+// useReducer:状態の更新の仕方も状態側で担当する。
+
+// 状態と処理の分離
+// useState: コンポーネントで更新用の処理を保持 簡単なプロジェクトなら良い
+// useReducer: stateと一緒に更新用の処理を保持 大きいプロジェクトになると検討した方が良い
+
+// 純粋性（純粋関数）純粋関数ではない場合はテストコードが書けなくなる
+// 特定の引数に特定の戻り値
+const reducer = (prev, { type, step }) => {
+  switch (type) {
+    case '+':
+      return prev + step
+    case '-':
+      return prev - step
+    default:
+      throw new Error('不明なactionです。')
+  }
+}
+
+// 不変性（Immutability）
+const Example = () => {
+  const [state, setState] = useState(0)
+  const [rstate, dispatch] = useReducer(reducer, 0)
+
+  const step = 2
+  const countUp = () => {
+    setState((prev) => {
+      return prev + step // 純粋関数にならなくなる useStateの場合は純粋関数を保てなくなることがある
+    })
+  }
+  const rcountUp = () => {
+    dispatch({ type: '+', step: 2 })
+  }
+  const rcountDown = () => {
+    dispatch({ type: '-', step: 3 })
+  }
+
+  return (
+    <>
+      <div>
+        <h3>{state}</h3>
+        <button onClick={countUp}>+</button>
+      </div>
+      <div>
+        <h3>{rstate}</h3>
+        <button onClick={rcountUp}>+</button>
+        <button onClick={rcountDown}>-</button>
+      </div>
+    </>
+  )
+}
+
+export default Example
+```

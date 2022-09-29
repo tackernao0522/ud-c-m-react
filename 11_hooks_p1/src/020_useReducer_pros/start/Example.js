@@ -7,7 +7,7 @@ import { useReducer, useState } from 'react'
 // useState: コンポーネントで更新用の処理を保持
 // useReducer: stateと一緒に更新用の処理を保持
 
-// 純粋性（純粋関数）
+// 純粋性（純粋関数）純粋関数ではない場合はテストコードが書けなくなる
 // 特定の引数に特定の戻り値
 const reducer = (prev, { type, step }) => {
   switch (type) {
@@ -28,7 +28,7 @@ const Example = () => {
   const step = 2
   const countUp = () => {
     setState((prev) => {
-      return prev + step
+      return prev + step // 純粋関数にならなくなる useStateの場合は純粋関数を保てなくなることがある
     })
   }
   const rcountUp = () => {
