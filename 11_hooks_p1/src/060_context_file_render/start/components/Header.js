@@ -1,12 +1,14 @@
-import { useTheme } from "../context/ThemeContext"
-
+import { useTheme, useUpdateTheme } from '../context/ThemeContext'
 
 const Header = () => {
-  const [theme, setTheme] = useTheme();
+  const theme = useTheme()
+  const setTheme = useUpdateTheme()
 
-  const THEMES = ["light", "dark", "red"];
+  const THEMES = ['light', 'dark', 'red']
 
-  const changeTheme = (e) => setTheme(e.target.value);
+  const changeTheme = (e) => setTheme(e.target.value)
+
+  console.log('header')
 
   return (
     <header className={`content-${theme}`}>
@@ -21,10 +23,10 @@ const Header = () => {
             />
             {_theme}
           </label>
-        );
+        )
       })}
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
