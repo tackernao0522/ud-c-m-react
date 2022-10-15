@@ -1,5 +1,8 @@
-const CounterResult = ({ state }) => {
-  return <h3>{state}</h3>;
-};
+import { useCounter } from './context/CounterContext'
 
-export default CounterResult;
+const CounterResult = () => {
+  const state = useCounter()
+  return <h3>{state}</h3>
+}
+
+export default CounterResult
