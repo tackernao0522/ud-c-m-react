@@ -1,19 +1,22 @@
-import { useState } from "react";
-const Form = ({ createTodo }) => {
-  const [enteredTodo, setEnteredTodo] = useState("");
+import { useState } from 'react'
+import { useDispatchTodos } from '../context/TodoContext'
+
+const Form = () => {
+  const [enteredTodo, setEnteredTodo] = useState('')
+  const dispatch = useDispatchTodos()
 
   const addTodo = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const newTodo = {
       id: Math.floor(Math.random() * 1e5),
       content: enteredTodo,
-    };
+    }
 
-    createTodo(newTodo);
+    dispatch({ type: 'todo/add', todo: newTodo })
 
-    setEnteredTodo("");
-  };
+    setEnteredTodo('')
+  }
   return (
     <div>
       <form onSubmit={addTodo}>
@@ -25,7 +28,7 @@ const Form = ({ createTodo }) => {
         <button>追加</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form
