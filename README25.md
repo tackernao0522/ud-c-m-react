@@ -159,3 +159,40 @@ const Example = () => {
 
 export default Example
 ```
+
+## 127. [練習&解答] useEffect
+
++ `12_hooks_p2/src/025_practice_useEffect/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useEffect, useState } from 'react'
+
+const Example = () => {
+  const [checked, setChecked] = useState(false)
+
+  // 追加
+  useEffect(() => {
+      checked && window.alert('checked!')
+  }, [checked])
+  // ここまで
+
+  return (
+    <>
+      <h3>練習問題</h3>
+      <p>
+        記述を変更し、完成コードのように、checkedがtrueの場合のみalertで「checked!」と表示されるようにしてください。useEffectを用いて実装してください。
+      </p>
+      <label>
+        <input
+          type={'checkbox'}
+          value={checked}
+          onClick={() => setChecked((checked) => !checked)}
+        />
+        click me
+      </label>
+    </>
+  )
+}
+
+export default Example
+```
