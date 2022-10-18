@@ -196,3 +196,166 @@ const Example = () => {
 
 export default Example
 ```
+
+## 128. useEffectのクリーンアップ処理の使い方
+
++ `12_hooks_p2/030_useEffect_cleanup/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useEffect, useState } from 'react'
+const Example = () => {
+  const [isDisp, setIsDisp] = useState(true) // 表示するかしないかの関数
+
+  return (
+    <>
+      {isDisp && <Timer />}
+      <button onClick={() => setIsDisp((prev) => !prev)}>トグル</button> // この時に呼ばれるのがコールバック関数となってくる
+    </>
+  )
+}
+const Timer = () => {
+  const [time, setTime] = useState(0)
+
+  // 依存配列[]を渡さなかったパターンの挙動
+  useEffect(() => {
+    console.log('init');
+    window.setInterval(() => {
+      setTime((prev) => prev + 1)
+    }, 1000)
+    return () => {
+      console.log('end'); // Timerコンポーネントが消滅する際に実行される
+    }
+  }, [])
+
+  // 依存配列[time]を渡したパターンの挙動 依存配列 timeの値が更新されるとコールバック関数が呼ばれるがこのコールバック関数が呼ばれる前にreturnに登録された関数が呼ばれることになる
+  useEffect(() => {
+    console.log('updated')
+    document.title = 'counter:' + time
+    window.localStorage.setItem('time-key', time)
+
+    return () => {
+      debugger
+      console.log('updated end')
+    }
+  }, [time])
+
+  return (
+    <h3>
+      <time>{time}</time>
+      <span>秒経過</span>
+    </h3>
+  )
+}
+
+export default Example
+```
+
++ debuggerを置いて画面を更新するコンソールを確認すると`updated`が呼ばれているplay buttonを進めるとupdated endが呼ばれてから次のupdatedが呼ばれる依存配列の場合は`updated end` <-> `updated end`を繰り返す。<br>
+
++ 要は`updated`の処理を初期化するように`updated end`が呼ばれるようになるイメージである そのあとまた新しい`updated`が呼ばれる<br>
+
++ この処理は`clean up`と呼ばれる<br>
+
++ `12_hooks_p2/030_useEffect_cleanup/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useEffect, useState } from 'react'
+const Example = () => {
+  const [isDisp, setIsDisp] = useState(true)
+
+  return (
+    <>
+      {isDisp && <Timer />}
+      <button onClick={() => setIsDisp((prev) => !prev)}>トグル</button>
+    </>
+  )
+}
+const Timer = () => {
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    // console.log('init')
+    window.setInterval(() => { // この関数が実行されるとconsole.logが表示される トグルをクリックしてもこの関数は一度登録してることによって動き続けているこれがメモリーリークに繋がる。
+    // このような場合にreturnのclean up 関数を使用して後始末をしてあげる。
+      console.log('interval called') // 追加
+      setTime((prev) => prev + 1)
+    }, 1000)
+    return () => {
+      // console.log('end')
+    }
+  }, [])
+
+  useEffect(() => {
+    // console.log('updated')
+    document.title = 'counter:' + time
+    window.localStorage.setItem('time-key', time)
+
+    return () => {
+      // debugger 削除
+      // console.log('updated end')
+    }
+  }, [time])
+
+  return (
+    <h3>
+      <time>{time}</time>
+      <span>秒経過</span>
+    </h3>
+  )
+}
+
+export default Example
+```
+
++ `12_hooks_p2/030_useEffect_cleanup/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useEffect, useState } from 'react'
+const Example = () => {
+  const [isDisp, setIsDisp] = useState(true)
+
+  return (
+    <>
+      {isDisp && <Timer />}
+      <button onClick={() => setIsDisp((prev) => !prev)}>トグル</button>
+    </>
+  )
+}
+const Timer = () => {
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    // console.log('init')
+    let intervalId = null // cleanupのための準備
+    intervalId = window.setInterval(() => { // 編集
+      console.log('interval called')
+      setTime((prev) => prev + 1)
+    }, 1000)
+    return () => {
+      window.clearInterval(intervalId) // windowオブジェクトにclearInterval関数があるその引数に`intervalIdを渡す
+      // これでトグルを押してクリアされると`interval called`コールバックは呼ばれなくなる
+      // console.log('end')
+    }
+  }, [])
+
+  useEffect(() => {
+    // console.log('updated')
+    document.title = 'counter:' + time
+    window.localStorage.setItem('time-key', time)
+
+    return () => {
+      // debugger
+      // console.log('updated end')
+    }
+  }, [time])
+
+  return (
+    <h3>
+      <time>{time}</time>
+      <span>秒経過</span>
+    </h3>
+  )
+}
+
+export default Example
+```
