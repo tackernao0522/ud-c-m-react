@@ -405,3 +405,215 @@ const Example = () => {
 
 export default Example
 ```
+
+## 130. useLayoutEffectって何? useEffectとの違いについて学ぼう
+
++ `12_hooks_p2/src/050_useLayoutEffect/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useEffect, useLayoutEffect, useState } from 'react' // 編集
+
+// useLayouteEffect
+const Example = () => {
+  const [isDisp, setIsDisp] = useState(true)
+
+  return (
+    <>
+      {isDisp && <Timer />}
+      <button onClick={() => setIsDisp((prev) => !prev)}>トグル</button>
+    </>
+  )
+}
+const Timer = () => {
+  const [time, setTime] = useState(0)
+
+  useLayoutEffect(() => { // 編集 基本的にuseEffectと同じような動作をする
+    // console.log('init');
+    let intervalId = null
+    intervalId = window.setInterval(() => {
+      console.log('interval called')
+      setTime((prev) => prev + 1)
+    }, 1000)
+    return () => {
+      window.clearInterval(intervalId)
+      // console.log('end');
+    }
+  }, [])
+
+  useEffect(() => {
+    // console.log('updated');
+
+    document.title = 'counter:' + time
+    window.localStorage.setItem('time-key', time)
+
+    return () => {
+      // console.log('updated end');
+    }
+  }, [time])
+
+  return (
+    <h3>
+      <time>{time}</time>
+      <span>秒経過</span>
+    </h3>
+  )
+}
+
+export default Example
+```
+
++ `12_hooks_p2/src/050_useLayoutEffect/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useEffect, useLayoutEffect, useState } from 'react'
+
+// useLayouteEffect
+const Example = () => {
+  const [isDisp, setIsDisp] = useState(true)
+
+  return (
+    <>
+      {isDisp && <Timer />}
+      <button onClick={() => setIsDisp((prev) => !prev)}>トグル</button>
+    </>
+  )
+}
+const Timer = () => {
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    // console.log('init');
+    let intervalId = null
+    intervalId = window.setInterval(() => {
+      console.log('interval called')
+      setTime((prev) => prev + 1)
+    }, 1000)
+    return () => {
+      window.clearInterval(intervalId)
+      // console.log('end');
+    }
+  }, [])
+
+  useEffect(() => {
+    // console.log('updated');
+
+    document.title = 'counter:' + time
+    window.localStorage.setItem('time-key', time)
+
+    return () => {
+      // console.log('updated end');
+    }
+  }, [time])
+
+  // トグルを閉じて開いたときにでもリセットされずカウントが継続される useEffecにすると上のuseEffectから順番に処理されるので初期値の0から始まってしまう
+  useLayoutEffect(() => { // useLayoutEffectは useEffecよりも先に実行される
+    const _time = parseInt(window.localStorage.getItem('time-key'))
+    if (!isNaN(_time)) {
+      setTime(_time)
+    }
+  }, [])
+
+  return (
+    <h3>
+      <time>{time}</time>
+      <span>秒経過</span>
+    </h3>
+  )
+}
+
+export default Example
+```
+
++ `12_hooks_p2/src/050_useLayoutEffect/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useEffect, useLayoutEffect, useState } from 'react'
+import Random from './Random' // 追加
+
+// useLayouteEffect
+const Example = () => {
+  const [isDisp, setIsDisp] = useState(true)
+
+  return (
+    <>
+      {isDisp && <Timer />}
+      <button onClick={() => setIsDisp((prev) => !prev)}>トグル</button>
+    </>
+  )
+}
+const Timer = () => {
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    // console.log('init');
+    let intervalId = null
+    intervalId = window.setInterval(() => {
+      console.log('interval called')
+      setTime((prev) => prev + 1)
+    }, 1000)
+    return () => {
+      window.clearInterval(intervalId)
+      // console.log('end');
+    }
+  }, [])
+
+  useEffect(() => {
+    // console.log('updated');
+
+    document.title = 'counter:' + time
+    window.localStorage.setItem('time-key', time)
+
+    return () => {
+      // console.log('updated end');
+    }
+  }, [time])
+
+  // トグルを閉じて開いたときにでもリセットされずカウントが継続される useEffecにすると上のuseEffectから順番に処理されるので初期値の0から始まってしまう
+  useLayoutEffect(() => {
+    // useLayoutEffectは useEffecよりも先に実行される
+    const _time = parseInt(window.localStorage.getItem('time-key'))
+    if (!isNaN(_time)) {
+      setTime(_time)
+    }
+  }, [])
+
+  return (
+    <>
+      <h3>
+        <time>{time}</time>
+        <span>秒経過</span>
+      </h3>
+      <Random /> // 追加
+    </>
+  )
+}
+
+export default Example
+```
+
++ `12_hooks_p2/src/050_useLayoutEffect/start/Random.js`を編集<br>
+
+```js:Random.js
+import { useLayoutEffect, useState } from 'react'
+
+const Random = () => {
+  const [state, setState] = useState(0)
+
+  useLayoutEffect(() => { // useEffectのままだと0が瞬間的にクリックする都度確認できるがuseLayoutEffectにするとそれがなくなる 画面がちらついたときんはuseLayoutEffectを使う
+    if (state === 0) {
+      setState(Math.random() * 300)
+    }
+  }, [state])
+
+  return (
+    <button
+      className="effect-btn"
+      onClick={() => setState(0)}
+      style={{ fontSize: '2.5em' }}
+    >
+      state: {state}
+    </button>
+  )
+}
+export default Random
+```
