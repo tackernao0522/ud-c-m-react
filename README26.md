@@ -520,3 +520,51 @@ const Timer = () => {
 
 export default Example
 ```
+
+## 133. [練習&解答] Custom Hook
+
++ `$ touch 075_practice_customHook/start/hooks.js`を実行<br>
+
++ `touch 075_practice_customHook/start/hooks.js`を編集<br>
+
+```js:hooks.js
+import { useState } from 'react'
+
+const useCount = () => {
+  const [count, setCount] = useState(0)
+  const countUp = () => {
+    setCount(count => count + 1)
+  }
+
+  return {
+    count,
+    countUp,
+  }
+}
+
+export default useCount
+```
+
++ `12_hooks_p2/src/075_practice_customHook/start/Example.js`を編集<br>
+
+```js:Exaample.js
+import useCount from './hooks'
+
+const Example = () => {
+  const { count, countUp } = useCount() // 追加
+
+  return (
+    <>
+      <h3>練習問題</h3>
+      <p>
+        記述を変更し、完成コードと同じ状態になるようにしてください。
+        startフォルダの中にhooks.jsというファイルを作成しその中でuseCountというカスタムフックを作成してください。
+      </p>
+      <div>Counts: {count}</div> // 編集
+      <button onClick={countUp}>Count Up!</button> // 編集
+    </>
+  )
+}
+
+export default Example
+```
