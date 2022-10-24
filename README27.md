@@ -197,3 +197,7 @@ const CounterResult = () => {
 
 export default CounterResult;
 ```
+
+## 139. Reduxの状態管理方法について学ぼう
+
++ [Reduxのデータフロー](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow) <br>
