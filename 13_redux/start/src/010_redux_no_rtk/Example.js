@@ -1,12 +1,14 @@
-import Counter from "./components/Counter";
-import { CounterProvider } from "./context/CounterContext";
+import Counter from './components/Counter'
+import { Provider } from 'react-redux'
+import store from "./store"
 
+// useContext x useReducer
 const Example = () => {
   return (
-    <CounterProvider>
+    <Provider store={store}>
       <Counter />
-    </CounterProvider>
-  );
-};
+    </Provider>
+  )
+}
 
-export default Example;
+export default Example

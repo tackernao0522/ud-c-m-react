@@ -21,10 +21,179 @@ createSlice...
 
 + `ステート (状態管理)`<br>
 
-___グローバルステート__<br>
+__グローバルステート__<br>
 アプリ全体で共有されるステート<br>
 
 例) useContext, Redux <br>
 
 __ローカルステート__<br>
 特定のコンポーネント内でのみ使用されるステート<br>
+
+## 138. Reduxを使ってみよう
+
++ `13_redux/start/src/App.js`を編集<br>
+
+```js:App.js
+import "./App.css";
+
+import Example from "./010_redux_no_rtk/Example"; // これを使う
+// import Example from "./015_multiple_reducers/Example";
+// import Example from "./020_actionCreator/Example";
+// import Example from "./030_redux_toolkit/Example";
+// import Example from "./040_immer/Example";
+// import Example from "./050_redux_thunk/Example";
+// import Example from "./060_createAsyncThunk/Example";
+// import Example from "./070_middleware/Example";
+
+const App = () => {
+  return (
+    <div className="App">
+      <h2>練習コード（start）</h2>
+      <Example />
+    </div>
+  );
+};
+
+export default App;
+```
+
++ `13_redux/start/src/010_redux_no_rtk/Example.js`を編集(素のReduxであり参考程度に。。。)実際にはRedux Tool Kitを使用すること(推奨)<br>
+
+```js:Example.js
+import Counter from './components/Counter'
+import { Provider } from 'react-redux' // 追加
+
+// useContext x useReducer
+const Example = () => {
+  return (
+    <Provider store={}> // 編集
+      <Counter />
+    </Provider> // 編集
+  )
+}
+
+export default Example
+```
+
++ `13_redux/start/src/010_redux_no_rtk/Example.js`を編集(素のReduxであり参考程度に。。。)<br>
+
+```js:Example.js
+import Counter from './components/Counter'
+import { Provider } from 'react-redux'
+import store from "./store" // 追加
+
+// useContext x useReducer
+const Example = () => {
+  return (
+    <Provider store={store}> // 編集
+      <Counter />
+    </Provider>
+  )
+}
+
+export default Example
+```
+
++ `13_redux/start/src/010_redux_no_rtk/context/CounterContext.js`を編集<br>
+
+```js:CounterContext.js
+import { createContext, useContext, useReducer } from "react";
+
+const CounterContext = createContext();
+const CounterDispatchContext = createContext();
+
+// 追加
+const reducer = (prev, { type, step }) => {
+  switch (type) {
+    case "+":
+      return prev + step;
+    case "-":
+      return prev - step;
+    default:
+      throw new Error('不明なactionです。')
+  }
+}
+// ここまで
+
+const CounterProvider = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, 0); // 編集
+    return (
+        <CounterContext.Provider value={state}>
+            <CounterDispatchContext.Provider value={dispatch}>
+                {children}
+            </CounterDispatchContext.Provider>
+        </CounterContext.Provider>
+    )
+}
+
+const useCounter = () => {
+    return useContext(CounterContext);
+}
+
+const useCounterDispatch = () => {
+    return useContext(CounterDispatchContext);
+}
+
+export { CounterProvider, useCounter, useCounterDispatch }
+```
+
++ `$ mkdir 010_redux_no_rtk/store && touch $_/index.js`を実行<br>
+
++ `13_redux/start/src/010_redux_no_rtk/store/index.js`を編集<br>
+
+```js:index.js
+import { createStore } from 'redux'
+
+const initialState = 0
+const reducer = (state = initialState, { type, step }) => {
+  switch (type) {
+    case '+':
+      return state + step
+    case '-':
+      return state - step
+    default:
+      return state // 編集
+  }
+}
+
+export default createStore(reducer)
+```
+
++ `13_redux/start/src/010_redux_no_rtk/components/CounterButton.js`を編集<br>
+
+```js:CounterButton.js
+import { useDispatch } from 'react-redux' // 追加
+// import { useCounterDispatch } from '../context/CounterContext' // 削除
+
+const CounterButton = ({ calcType, step }) => {
+  const dispatch = useDispatch() // 追加
+  // const dispatch = useCounterDispatch() // 削除
+
+  const clickHandler = () => {
+    dispatch({ type: calcType, step })
+  }
+
+  return (
+    <button onClick={clickHandler}>
+      {calcType}
+      {step}
+    </button>
+  )
+}
+export default CounterButton
+```
+
++ `13_redux/start/src/010_redux_no_rtk/components/CounterResult.js`を編集<br>
+
+```js:CounterResult.js
+import { useSelector } from "react-redux";
+// import { useCounter } from "../context/CounterContext"; // 削除
+
+const CounterResult = () => {
+  // const state = useCounter(); // 削除
+  const state = useSelector(state => state) // 追加
+  return <h3>{state}</h3>;
+};
+
+export default CounterResult;
+```
