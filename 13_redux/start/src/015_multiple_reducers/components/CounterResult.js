@@ -1,9 +1,10 @@
-import { useCounter } from "../context/CounterContext";
-import { useSelector } from "react-redux"
+// import { useCounter } from "../context/CounterContext";
+import { useSelector } from 'react-redux'
 const CounterResult = () => {
   // const state = useCounter();
-  const state = useSelector(state => state);
-  return <h3>{state}</h3>;
-};
+  const state = useSelector((state) => state)
+  console.log(state) // {counter: 0} state.counterとすると 0 になる
+  return <h3>{state.counter}:{state.counter2}</h3>
+}
 
-export default CounterResult;
+export default CounterResult

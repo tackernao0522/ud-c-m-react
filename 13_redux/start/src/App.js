@@ -1,7 +1,7 @@
-import "./App.css";
+import './App.css'
 
-import Example from "./010_redux_no_rtk/Example";
-// import Example from "./015_multiple_reducers/Example";
+// import Example from "./010_redux_no_rtk/Example";
+import Example from './015_multiple_reducers/Example'
 // import Example from "./020_actionCreator/Example";
 // import Example from "./030_redux_toolkit/Example";
 // import Example from "./040_immer/Example";
@@ -15,7 +15,7 @@ const App = () => {
       <h2>練習コード（start）</h2>
       <Example />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
