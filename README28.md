@@ -315,3 +315,112 @@ const CounterButton = ({ calcType, step }) => {
 }
 export default CounterButton
 ```
+
+## 143. Redux Toolkitにおけるミュータブルな値の変更
+
++ `13_redux/start/src/App.js`を編集<br>
+
+```js:App.js
+import './App.css'
+
+// import Example from "./010_redux_no_rtk/Example";
+// import Example from './015_multiple_reducers/Example'
+// import Example from "./020_actionCreator/Example";
+// import Example from "./030_redux_toolkit/Example";
+import Example from "./040_immer/Example"; // 編集
+// import Example from "./050_redux_thunk/Example";
+// import Example from "./060_createAsyncThunk/Example";
+// import Example from "./070_middleware/Example";
+
+const App = () => {
+  return (
+    <div className="App">
+      <h2>練習コード（start）</h2>
+      <Example />
+    </div>
+  )
+}
+
+export default App
+```
+
++ `13_redux/start/src/040_immer/store/modules/counter.js`を編集<br>
+
+```js:counter.js
+import { createSlice } from '@reduxjs/toolkit'
+
+const counter = createSlice({
+  name: 'counter',
+  // 編集
+  initialState: {
+    count: 0,
+  },
+  reducers: {
+    add(state, { type, payload }) {
+      const newState = { ...state }
+      newState.count = state.count + payload
+      console.log(type, payload)
+      return newState
+    },
+    minus(state, { type, payload }) {
+      const newState = { ...state }
+      newState.count = state.count - payload
+      console.log(type, payload)
+      return newState
+    },
+    // ここまで
+  },
+})
+
+const { add, minus } = counter.actions
+
+export { add, minus }
+export default counter.reducer
+```
+
++ `13_redux/start/src/040_immer/components/CounterResults.js`を編集<br>
+
+```js:CounterResults.js
+import { useSelector } from "react-redux"
+const CounterResult = () => {
+  const count = useSelector(state => state.counter.count); // 編集
+  // console.log(state)
+  return <h3>{count}</h3>; // 編集
+};
+
+export default CounterResult;
+```
+
++ `13_redux/start/src/040_immer/store/modules/counter.js`を編集(toolkitならではの書き方)<br>
+
+```js:counter.js
+import { createSlice } from '@reduxjs/toolkit'
+
+const counter = createSlice({
+  name: 'counter',
+  initialState: {
+    count: 0,
+  },
+  reducers: {
+    add(state, { type, payload }) {
+      state.count = state.count + payload // 追加 immer + Redux Tooklitの場合これで良い(mutableな書き方でOK)
+      // const newState = { ...state }
+      // newState.count = state.count + payload
+      // console.log(type, payload)
+      // return newState
+    },
+    minus(state, { type, payload }) {
+      state.count = state.count - payload // 追加
+      // const newState = { ...state }
+      // newState.count = state.count - payload
+      // console.log(type, payload)
+      // return newState
+    },
+  },
+})
+
+const { add, minus } = counter.actions
+
+export { add, minus }
+export default counter.reducer
+```
