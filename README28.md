@@ -424,3 +424,129 @@ const { add, minus } = counter.actions
 export { add, minus }
 export default counter.reducer
 ```
+
+## 144. Immerを使ったミュータブルな値の変更
+
+### イミュータブル (immutable)
+
+書き換えが不可 (元の値は変わらない)<br>
+`文字列、数値、BigInt、真偽値、undefined、シンボル`<br>
+
+### ミュータブル (mutable)
+
+書き換えが可能 (元の値が変わる)<br>
+`イミュータブルな値以外。オブジェクト。(Object、Arrayなど)`<br>
+
+### イミュータブル (immutable) な値の変更
+
+```
+let val = 0
+
+↓ 値の変更
+
+val = 1
+```
+
+`val` -> `0`<br>
+↓<br>
+`1`<br>
+変数の参照する先が変わっている => 元の値を上書きしたことにならない。=> immutable (変更不可の値) な値<br>
+
+`メモリ空間`<br>
+
+### ミュータブル (mutable) な値の変更
+
+```
+let val = [1, 2, 3]
+
+↓ 配列の変更
+
+val.push(4);
+```
+
+`val` -> `[]` -> `1` -> `2` -> `3` -> `4`<br>
+変数の参照する先が変わらない。-> 配列の中身 (元の値) が変わっている！ -> mutableな値 (変更可能な値)<br>
+
+`メモリ空間`<br>
+
+### Immutabilityの保持
+
+```
+let val = [1, 2]
+
+配列をコピーして値を変更
+
+↓
+
+val = [...val, 3]
+```
+
+`val` -> `[] .` -> `1` -> `2`<br>
+↓<br>
+`[]` -> `1` -> `2` -> `3`<br>
+変数の参照する先が変わっている！ -> 元の値は変わらない！ -> immutabilityが保持されている。<br>
+
+`メモリ空間`<br>
+
++ `$ touch 13_redux/start/src/040_immer/immer.js`を実行<br>
+
++ `13_redux/start/src/040_immer/Example.js`を編集<br>
+
+```js:Example.js
+import Counter from "./components/Counter";
+import { Provider } from "react-redux";
+import store from "./store"
+import "./immer" // 追加
+
+const Example = () => {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+};
+
+export default Example;
+```
+
++ `13_redux/start/src/040_immer/immer.js`を編集<br>
+
+```js:immer.js
+import produce from 'immer'
+
+const state = {
+  name: 'Tom',
+  hobbies: ['tennis', 'soccer'],
+}
+
+const newState = produce(state, (draft) => {
+  draft.name = 'John' // immutableな操作に変換される
+  draft.hobbies = 'baseball' // immutablityである
+  console.log(draft) // Proxy {i: 0, A: {…}, P: false, I: false, D: {…}, …}
+  // return state // returnを入れるとエラーになるので使わないこと
+})
+
+console.log(state, newState) // {name: 'Tom', hobbies: Array(2)} {name: 'John', hobbies: Array(2)}
+console.log(state === newState) // false
+```
+
++ `13_redux/start/src/040_immer/Example.js`を編集(returnを使う場合)<br>
+
+```js:Example.js
+import produce from 'immer'
+
+const state = {
+  name: 'Tom',
+  hobbies: ['tennis', 'soccer'],
+}
+
+const newState = produce(state, (draft) => {
+  // draft.name = 'John' // immutableな操作に変換される
+  // draft.hobbies = 'baseball' // immutablityである
+  console.log(draft) // Proxy {i: 0, A: {…}, P: false, I: false, D: {…}, …}
+  return [];
+})
+
+console.log(state, newState) // {name: 'Tom', hobbies: Array(2)} {name: 'John', hobbies: Array(2)}
+console.log(state === newState) // false
+```
