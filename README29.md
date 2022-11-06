@@ -350,3 +350,104 @@ const Counter = () => {
 }
 export default Counter
 ```
+
+## 148. Redux Middlewareを作成してみよう
+
++ `13_redux/start/src/App.js`を編集<br>
+
+```js:App.js
+import './App.css'
+
+// import Example from "./010_redux_no_rtk/Example";
+// import Example from './015_multiple_reducers/Example'
+// import Example from "./020_actionCreator/Example";
+// import Example from "./030_redux_toolkit/Example";
+// import Example from "./040_immer/Example";
+// import Example from "./050_redux_thunk/Example";
+// import Example from "./060_createAsyncThunk/Example";
+import Example from "./070_middleware/Example"; // 編集
+
+const App = () => {
+  return (
+    <div className="App">
+      <h2>練習コード（start）</h2>
+      <Example />
+    </div>
+  )
+}
+
+export default App
+```
+
++ `$ mkdir 070_middleware/middleware/logger.js`を実行<br>
+
++ `13_redux/start/src/070_middleware/logger.js`を編集<br>
+
+```js:logger.js
+const logger = (store) => {
+  return (next) => {
+    return (action) => {
+      console.log(store.getState())
+      next(action)
+      console.log(store.getState())
+      // storeはaction後の状態
+    }
+  }
+}
+
+export default logger
+```
+
++ `13_redux/start/src/070_middleware/store/index.js`を編集 part1<br>
+
+```js:index.js
+import { configureStore } from '@reduxjs/toolkit'
+import logger from '../middleware/logger' // 追加
+import reducer from './modules/counter'
+
+export default configureStore({
+  reducer: {
+    counter: reducer,
+  },
+  // 追加
+  middleware: (getDefaultMiddleware) => {
+    const middlewares = getDefaultMiddleware()
+    console.log(middlewares)
+    const newMiddlewares = middlewares.concat(logger)
+    return newMiddlewares
+  },
+  // ここまで
+})
+```
+
++ `13_redux/start/src/070_middleware/store/index.js`を編集 part2(省略した書き方)br>
+
+```js:index.js
+import { configureStore } from '@reduxjs/toolkit'
+import logger from '../middleware/logger'
+import reducer from './modules/counter'
+
+export default configureStore({
+  reducer: {
+    counter: reducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+})
+```
+
++ `13_redux/start/src/070_middleware/logger.js`を編集<br>
+
+```js:logger.js
+const logger = (store) => {
+  return (next) => {
+    return (action) => {
+      console.log('変更前', store.getState()) // 編集
+      next(action)
+      console.log('変更後', store.getState()) // 編集
+      // storeはaction後の状態
+    }
+  }
+}
+
+export default logger
+```
