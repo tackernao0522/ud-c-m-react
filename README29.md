@@ -451,3 +451,53 @@ const logger = (store) => {
 
 export default logger
 ```
+
+## 149. セクションまとめ
+
+### Redux
+
+Reactとは別の状態管理のためのライブラリ<br>
+
+↓<br>
+
+React以外のライブラリとも組み合わせて使用可能<br>
+
+Redux <-> React<br>
+
+## Redux Toolkit (RTK)
+
+素のReduxは他のライブラリが必要なケースが多い。<br>
+
+↓<br>
+
+公式が推奨する設定や書き方をまとめたもの。<br>
+
+`Redux Toolkit(RTK)`<br>
+
+```
+Redux
+Immer
+redux-thunk
+createSlice...
+```
+
+### ReduxのReducerには副作用は書かない
+
+Reducerは純粋関数として定義する。<br>
+副作用が発生する操作はReducerには書かない。<br>
+
+`副作用の例`<br>
+
+```
+コンソールへのログ出力
+DOM操作
+サーバーとの通信
+タイマー処理
+ランダムな値の生成
+```
+
+↓
+
+```
+ミドルウェア(middleware)に記載
+```
