@@ -46,3 +46,148 @@ const App = () => {
 
 export default App
 ```
+
+## 146. Redux Thunkで非同期処理を記述してみよう
+
++ `$ mkdir 050_redux_thunk/api && touch $_/counter.js`を実行<br>
+
++ `13_redux/start/src/050_redux_thunk/api/counter.js`を編集<br>
+
+```js:counter.js
+const asyncCount = (count = 1) => {
+  return new Promise((resolve) =>
+    setTimeout(() => resolve({ data: count }), Math.random() * 1000),
+  )
+}
+
+export default asyncCount
+```
+
++ `13_redux/start/src/050_redux_thunk/store/modules/counter.js`を編集<br>
+
+```js:counter.js
+import { createSlice } from '@reduxjs/toolkit'
+import asyncCount from '../../api/counter'
+
+const counter = createSlice({
+  name: 'counter',
+  initialState: {
+    count: 0,
+  },
+  reducers: {
+    add(state, { type, payload }) {
+      state.count = state.count + payload
+      // const newState = { ...state };
+      // newState.count = state.count + payload
+      // return newState;
+    },
+    minus(state, { type, payload }) {
+      state.count = state.count - payload
+      // const newState = { ...state };
+      // newState.count = state.count - payload
+      // return newState;
+    },
+  },
+})
+
+const { add, minus } = counter.actions
+
+// 追加
+const addAsync = (payload) => {
+  return async (dispatch, getState) => {
+    const response = await asyncCount(payload)
+    dispatch(add(response.data))
+  }
+}
+// ここまで
+
+export { add, minus, addAsync } // 編集
+export default counter.reducer
+```
+
++ `13_redux/start/src/050_redux_thunk/components/CounterButton.js`を編集<br>
+
+```js:CounterButton.js
+import { useDispatch } from 'react-redux'
+import { add, minus } from '../store/modules/counter' // カットする
+
+const CounterButton = ({ calcType, step, actionCreator }) => { // actionCreatorを追加
+  const dispatch = useDispatch()
+  const clickHandler = () => {
+    // const action = calcType === '+' ? add(step) : minus(step) コメントアウト
+    dispatch(actionCreator(step)) // 追加
+  }
+
+  return (
+    <button onClick={clickHandler}>
+      {calcType}
+      {step}
+    </button>
+  )
+}
+export default CounterButton
+```
+
++ `13_redux/start/src/050_redux_thunk/components/Counter.js`を編集<br>
+
+```js:Counter.js
+import { add, minus, addAsync } from '../store/modules/counter' // 追加
+import CounterResult from './CounterResult'
+import CounterButton from './CounterButton'
+
+const Counter = () => {
+  return (
+    <>
+      <CounterResult />
+      // 編集
+      <CounterButton step={2} calcType="+" actionCreator={add} />
+      <CounterButton step={2} calcType="-" actionCreator={minus} />
+      <CounterButton step={2} calcType="非同期(+)" actionCreator={addAsync} />
+      // ここまで
+    </>
+  )
+}
+export default Counter
+```
+
++ `13_redux/start/src/050_redux_thunk/store/modules/counter.js`を編集<br>
+
+```js:counter.js
+import { createSlice } from '@reduxjs/toolkit'
+import asyncCount from '../../api/counter'
+
+const counter = createSlice({
+  name: 'counter',
+  initialState: {
+    count: 0,
+  },
+  reducers: {
+    add(state, { type, payload }) {
+      state.count = state.count + payload
+      // const newState = { ...state };
+      // newState.count = state.count + payload
+      // return newState;
+    },
+    minus(state, { type, payload }) {
+      state.count = state.count - payload
+      // const newState = { ...state };
+      // newState.count = state.count - payload
+      // return newState;
+    },
+  },
+})
+
+const { add, minus } = counter.actions
+
+const addAsync = (payload) => {
+  return async (dispatch, getState) => {
+    const state = getState() // 追加
+    console.log(state) // 追加
+    const response = await asyncCount(payload)
+    dispatch(add(response.data))
+  }
+}
+
+export { add, minus, addAsync }
+export default counter.reducer
+```
