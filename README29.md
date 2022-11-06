@@ -191,3 +191,162 @@ const addAsync = (payload) => {
 export { add, minus, addAsync }
 export default counter.reducer
 ```
+
+## 147. 非同期処理のステータスを画面に表示してみよう
+
++ `13_redux/start/src/050_redux_thunk/store/modules/counter.js`を編集<br>
+
+```js:counter.js
+import { createSlice } from '@reduxjs/toolkit'
+import asyncCount from '../../api/counter'
+
+const counter = createSlice({
+  name: 'counter',
+  initialState: {
+    count: 0,
+    status: '' // 追加
+  },
+  reducers: {
+    add(state, { type, payload }) {
+      state.count = state.count + payload
+      // const newState = { ...state };
+      // newState.count = state.count + payload
+      // return newState;
+    },
+    minus(state, { type, payload }) {
+      state.count = state.count - payload
+      // const newState = { ...state };
+      // newState.count = state.count - payload
+      // return newState;
+    },
+  },
+})
+
+const { add, minus } = counter.actions
+
+const addAsync = (payload) => {
+  return async (dispatch, getState) => {
+    const state = getState()
+    console.log(state)
+    const response = await asyncCount(payload)
+    dispatch(add(response.data))
+  }
+}
+
+export { add, minus, addAsync }
+export default counter.reducer
+```
+
++ `13_redux/start/src/050_redux_thunk/components/Counter.js`を編集<br>
+
+```js:Counter.js
+import { add, minus, addAsync } from '../store/modules/counter'
+import CounterResult from './CounterResult'
+import CounterButton from './CounterButton'
+import { useSelector } from 'react-redux' // 追加
+
+const Counter = () => {
+  const status = useSelector(state => state.counter.status) // 追加
+  return (
+    <>
+      <CounterResult />
+      <CounterButton step={2} calcType="+" actionCreator={add} />
+      <CounterButton step={2} calcType="-" actionCreator={minus} />
+      <CounterButton step={2} calcType="非同期(+)" actionCreator={addAsync} />
+      <h3></h3> // 追加
+    </>
+  )
+}
+export default Counter
+```
+
++ `13_redux/start/src/050_redux_thunk/store/modules/counter.js`を編集<br>
+
+```js:counter.js
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit' // 編集
+import asyncCount from '../../api/counter'
+
+const counter = createSlice({
+  name: 'counter',
+  initialState: {
+    count: 0,
+    status: '', // 追加
+  },
+  reducers: {
+    add(state, { type, payload }) {
+      state.count = state.count + payload
+      // const newState = { ...state };
+      // newState.count = state.count + payload
+      // return newState;
+    },
+    minus(state, { type, payload }) {
+      state.count = state.count - payload
+      // const newState = { ...state };
+      // newState.count = state.count - payload
+      // return newState;
+    },
+  },
+  // 追加
+  extraReducers: (builder) => {
+    builder
+      .addCase(addAsyncWithStatus.pending, (state) => {
+        state.status = 'Loading...'
+      })
+      .addCase(addAsyncWithStatus.fulfilled, (state, action) => {
+        state.status = '取得済'
+        state.count = state.count + action.payload
+      })
+      .addCase(addAsyncWithStatus.rejected, (state) => {
+        state.status = 'エラー'
+      })
+  },
+  // ここまで
+})
+
+const { add, minus } = counter.actions
+
+// 追加
+const addAsyncWithStatus = createAsyncThunk(
+  'counter/asyncCount',
+  async (payload) => {
+    const response = await asyncCount(payload)
+    return response.data
+  },
+)
+// ここまで
+
+const addAsync = (payload) => {
+  return async (dispatch, getState) => {
+    const state = getState()
+    console.log(state)
+    const response = await asyncCount(payload)
+    dispatch(add(response.data))
+  }
+}
+
+export { add, minus, addAsync, addAsyncWithStatus } // 編集
+export default counter.reducer
+```
+
++ `13_redux/start/src/050_redux_thunk/components/Counter.js`を編集<br>
+
+```js:Counter.js
+import { add, minus, addAsyncWithStatus } from '../store/modules/counter' // 編集
+import CounterResult from './CounterResult'
+import CounterButton from './CounterButton'
+import { useSelector } from 'react-redux'
+
+const Counter = () => {
+  const status = useSelector(state => state.counter.status)
+  return (
+    <>
+      <CounterResult />
+      <CounterButton step={2} calcType="+" actionCreator={add} />
+      <CounterButton step={2} calcType="-" actionCreator={minus} />
+      <CounterButton step={2} calcType="非同期(+)" actionCreator={addAsyncWithStatus} /> // 編集
+      <h3>{status}</h3> // 編集
+    </>
+  )
+}
+export default Counter
+```
