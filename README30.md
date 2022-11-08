@@ -78,3 +78,27 @@
   ↓<br>
 
   これらの問題を解決するため、Hooksが導入された<br>
+
+## 152. クラスコンポーネントを定義してみよう
+
++ `14_class_components/src/010_introduce/start/Example.js`を編集<br>
+
+```js:Example.js
+import { Component } from 'react' // 追加
+
+// 追加
+class Example extends Component {
+  render() {
+    return <h3>I'm Function Component</h3>
+  }
+}
+// ここまで
+
+// const Example = () => {
+//   return (
+//     <h3>I'm Function Component</h3>
+//   );
+// };
+
+export default Example
+```
