@@ -102,3 +102,131 @@ class Example extends Component {
 
 export default Example
 ```
+
+## 153. クラスコンポーネントでの状態管理
+
++ `14_class_component/src/030_state/start/Example.js`を編集<br>
+
+```js:Example.js
+import { Component } from 'react' // 追加
+
+// 追加
+class SwitchButton extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      switchOn: true,
+      label: 'On',
+    }
+  }
+
+  changeSwitch() {
+    console.log('clicked')
+  }
+
+  render() {
+    const { label } = this.state
+    return <button onClick={this.changeSwitch}>{label}</button>
+  }
+}
+// ここまで
+
+const Example = () => {
+  return (
+    <>
+      <SwitchButton />
+    </>
+  )
+}
+
+export default Example
+```
+
++ `14_class_component/src/030_state/start/Example.js`を編集<br>
+
+```js:Example.js
+import { Component } from 'react'
+
+class SwitchButton extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      switchOn: true,
+      label: 'On',
+    }
+  }
+
+  // 追加
+  changeSwitch() {
+    // console.log('clicked')
+    // console.log(this) // undefinedになる bindすると取得できる // 追加
+
+    this.setState((prevState) => {
+      return {
+        switchOn: !prevState.switchOn,
+        label: !prevState.switchOn ? 'On' : 'Off',
+      }
+    })
+  }
+  // ここまで
+
+  render() {
+    const { label } = this.state
+    return <button onClick={this.changeSwitch.bind(this)}>{label}</button> // 編集
+  }
+}
+
+const Example = () => {
+  return (
+    <>
+      <SwitchButton />
+    </>
+  )
+}
+
+export default Example
+```
+
++ `14_class_component/src/030_state/start/Example.js`を編集<br>
+
+```js:Example.js
+import { Component } from 'react'
+
+class SwitchButton extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      switchOn: true,
+      label: 'On',
+    }
+    this.changeSwitch = this.changeSwitch.bind(this) // 追加
+  }
+
+  changeSwitch() {
+    // console.log('clicked')
+    // console.log(this) // undefinedになる bindすると取得できる
+
+    this.setState((prevState) => {
+      return {
+        switchOn: !prevState.switchOn,
+        label: !prevState.switchOn ? 'On' : 'Off',
+      }
+    })
+  }
+
+  render() {
+    const { label } = this.state
+    return <button onClick={this.changeSwitch}>{label}</button> // 編集
+  }
+}
+
+const Example = () => {
+  return (
+    <>
+      <SwitchButton />
+    </>
+  )
+}
+
+export default Example
+```
