@@ -230,3 +230,37 @@ const Example = () => {
 
 export default Example
 ```
+
+## 154. ライフサイクルメソッドとは？
+
+### コンポーネントのライフサイクルとは？
+
+  __コンポーネントの一生には３つの段階がある。__<br>
+
+  `Mounting`  `Updating`  `Unmounting`<br>
+
+  それぞれの段階で特別なメソッドが用意されており、特定のタイミングで実行させることができる。<br>
+
+### 主なライフサイクルメソッド
+
+`Mounting`<br>
+    componentDidMount()<br>
+    1回目のrender()が呼ばれ、DOMがレンダーされた後に一度だけ実行される。<br>
+
+`Updating`<br>
+    componentDidUpdate()
+    stateが更新された直後に実行される。<br>
+
+`Unmounting`<br>
+    componentwillUnmount()<br>
+    コンポーネントが破棄される直前に実行される。<br>
+
++ 参考: [Classコンポーネントのライフサイクル](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)<br>
+
+### ライフサイクルメソッドとuseEffectの比較
+
+|クラスコンポーネント|関数コンポーネント|
+|:---:|:---:|
+|componentDidMount()|useEffect(..., [])|
+|componentDidUpdate()|useEffect(..., [val])|
+|componentWillUnmount()|useEffect(() => { return () => {...}, [] })|
