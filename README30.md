@@ -264,3 +264,86 @@ export default Example
 |componentDidMount()|useEffect(..., [])|
 |componentDidUpdate()|useEffect(..., [val])|
 |componentWillUnmount()|useEffect(() => { return () => {...}, [] })|
+
+## 155. Error Boundaryの実装方法
+
+
++ `14_class_component/src/050_error_boundary/start/component/ErrorBoundary.js`を編集<br>
+
+```js:ErrorBoundary.js
+import { Component } from 'react'
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { error: null, errorInfo: null }
+  }
+
+  // static getDerivedStateFromError(error) {
+  //   // 副作用の記述NG
+  // }
+
+  // 編集
+  componentDidCatch(error, errorInfo) {
+    // 副作用の記述OK
+    this.setState({
+      error: error,
+      errorInfo: errorInfo
+    })
+  }
+
+  render() {
+    if (this.state.errorInfo) {
+      return (
+        <div>
+          <h3>エラー発生</h3>
+          <details style={{ whiteSpace: 'pre-wrap' }}>
+            {this.state.error && this.state.error.toString()}
+            <br />
+            {this.state.errorInfo.componentStack}
+          </details>
+        </div>
+      )
+    }
+
+    return this.props.children
+  }
+}
+
+export default ErrorBoundary
+```
+
++ `14_class_component/src/050_error_boundary/start/Example.js`を編集<br>
+
+```js:Example.js
+import { Component } from 'react'
+import BuggyCounter from './component/BuggyCounter'
+import ErrorBoundary from './component/ErrorBoundary'
+
+class Example extends Component {
+  render() {
+    return (
+      <div>
+        <h3>React16 Error Boundaries</h3>
+        <p>下記の数値をクリック！</p>
+        <hr />
+        <h4>同じError Boundary内のコンポーネント</h4>
+        <ErrorBoundary> // 追加
+          <BuggyCounter />
+          <BuggyCounter />
+        </ErrorBoundary> // 追加
+        <hr />
+        <h4>異なるError Boundary内のコンポーネント</h4>
+        <ErrorBoundary> // 追加
+          <BuggyCounter />
+        </ErrorBoundary> // 追加
+        <ErrorBoundary> // 追加
+          <BuggyCounter />
+        </ErrorBoundary> // 追加
+      </div>
+    )
+  }
+}
+
+export default Example
+```
