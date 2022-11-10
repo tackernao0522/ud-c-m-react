@@ -139,4 +139,4 @@ export default StrictComp // 編集
 
 + 生成された`build`フォルダを新規のVSコードで起動して、`Go Live`を起動する<br>
 
-+ 本番用ではStrict Modeでも一度のみしか際レンダリングされなくなる。<br>
++ 本番用ではStrictModeでも一度のみしか際レンダリングされなくなる。<br>
