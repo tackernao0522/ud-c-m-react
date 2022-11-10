@@ -70,3 +70,73 @@ stateの変更によってコンポーネントが__再実行__されること�
 ### コミット
 
 __再レンダリング の結果、ReactがReact要素の差分のみをDOMに反映する__<br>
+
+## 158. Stateの比較処理 (Object.is)
+
+[動画参照](https://www.udemy.com/course/react-complete-guide/learn/lecture/33043846#questions)<br>
+
+## 159. [TIPS] StrictModeとは？
+
++ `15_performance/src/012_strictmode/start/Example.js`を編集<br>
+
+```js:Example.js
+import { StrictMode, useState } from 'react' // 編集
+import './Example.css'
+
+// 追加
+const StrictComp = () => {
+  return (
+    <StrictMode>
+      <Example />
+    </StrictMode>
+  )
+}
+// ここまで
+
+const Example = () => {
+  console.log('render')
+
+  const [countA, setCountA] = useState({
+    val: 0,
+  })
+
+  const obj1 = { val: 0 }
+  const obj3 = { val: 0 }
+  const obj2 = { ...obj1 }
+  const isSame = Object.is('', false)
+  const isSameEqual = '' == false
+  console.log(isSameEqual)
+
+  return (
+    <div className="parent">
+      <div>
+        <h3>再レンダリング？</h3>
+        <button
+          onClick={() => {
+            setCountA((prev) => {
+              const newState = { ...prev }
+              // prev.val = 1;
+              return newState
+            })
+          }}
+        >
+          ボタンA
+        </button>
+      </div>
+      <div>
+        <p>ボタンAクリック回数：{countA.val}</p>
+      </div>
+    </div>
+  )
+}
+
+export default StrictComp // 編集
+```
+
+#### 本番環境用にビルドしてみる<br>
+
++ `$ npm run build`を実行<br>
+
++ 生成された`build`フォルダを新規のVSコードで起動して、`Go Live`を起動する<br>
+
++ 本番用ではStrict Modeでも一度のみしか際レンダリングされなくなる。<br>
