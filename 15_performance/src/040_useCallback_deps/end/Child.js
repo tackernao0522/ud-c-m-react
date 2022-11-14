@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const Child = React.memo(({ countB, onClick }) => {
-  console.log("%cChild render", "color: red;");
+  console.log('%cChild render', 'color: red;')
 
   return (
     <div className="child">
@@ -9,7 +9,7 @@ const Child = React.memo(({ countB, onClick }) => {
       <button onClick={onClick}>ボタンB</button>
       <p>ボタンBクリック回数：{countB}</p>
     </div>
-  );
-});
+  )
+})
 
-export default Child;
+export default Child
