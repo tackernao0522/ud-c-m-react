@@ -299,3 +299,172 @@ const Example = () => {
 
 export default Example
 ```
+
+## 162. useCallbackを使った関数のメモ化
+
++ `15_performance/src/030_useCallback/start/Example.js`を編集(ボタンBの部分を子コンポーネントにする)<br>
+
+```js:Example.js
+import React, { useState } from 'react'
+import Child from './Child'
+import '../end/Example.css'
+
+const Example = () => {
+  console.log('Parent render')
+
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(0)
+
+  const clickHandler = () => {
+    setCountB((pre) => pre + 1)
+  }
+
+  return (
+    <div className="parent">
+      <div>
+        <h3>親コンポーネント領域</h3>
+        <div>
+          <button
+            onClick={() => {
+              setCountA((pre) => pre + 1)
+            }}
+          >
+            ボタンA
+          </button>
+          <span>親のstateを更新</span>
+        </div>
+      </div>
+      <div>
+        <p>ボタンAクリック回数：{countA}</p>
+      </div>
+      <Child countB={countB} onClick={clickHandler} />
+    </div>
+  )
+}
+
+export default Example
+```
+
++ `15_performance/src/030_useCallback/start/Child.js`を編集<br>
+
+```js:Child.js
+import { memo } from 'react'
+
+const ChildMemo = memo(({ countB, onClick }) => {
+  console.log('%cChild render', 'color: red;')
+
+  return (
+    <div className="child">
+      <h2>子コンポーネント領域</h2>
+      <div>
+        <button onClick={onClick}>ボタンB</button>
+        <span>子のpropsに渡すstateを更新</span>
+      </div>
+      <span>ボタンBクリック回数：{countB}</span>
+    </div>
+  )
+})
+
+export default ChildMemo
+```
+
++ 現時点ではAボタンを押してる時に子コンポーネントも再レンダリングされてしまう。<br>
+  それはclickHandlerという関数が親コンポーネントに定義されているのでAボタンをそう都度に子コンポーネントが再レンダリング されてしまう。<br>
+  clickHandeler関数は実行される度に別物と判断される為です。なのでmemoは効かない。<br>
+  それを対処する為に`useCallback()`を使用する。<br>
+  それを確認するために下記のコードを`Example.js`に記述してみる。<br>
+
++ `15_performance/src/030_useCallback/start/Example.js`に確認コード<br>
+
+```js:Example.js
+import React, { useState } from 'react'
+import Child from './Child'
+import '../end/Example.css'
+
+const Example = () => {
+  console.log('Parent render')
+
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(0)
+
+  const clickHandler = () => {
+    setCountB((pre) => pre + 1)
+  }
+  // 追加
+  const clickHandler2 = () => {
+    setCountB((pre) => pre + 1)
+  }
+
+  console.log(Object.is(clickHandler, clickHandler2)) // falseになるので別物である(そのためにmemoが効かない)
+  // ここまで
+
+  return (
+    <div className="parent">
+      <div>
+        <h3>親コンポーネント領域</h3>
+        <div>
+          <button
+            onClick={() => {
+              setCountA((pre) => pre + 1)
+            }}
+          >
+            ボタンA
+          </button>
+          <span>親のstateを更新</span>
+        </div>
+      </div>
+      <div>
+        <p>ボタンAクリック回数：{countA}</p>
+      </div>
+      <Child countB={countB} onClick={clickHandler} />
+    </div>
+  )
+}
+
+export default Example
+```
+
++ `15_performance/src/030_useCallback/start/Example.js`を編集<br>
+
+```js:Example.js
+import React, { useCallback, useState } from 'react'
+import Child from './Child'
+import '../end/Example.css'
+
+const Example = () => {
+  console.log('Parent render')
+
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(0)
+
+  // 編集
+  const clickHandler = useCallback(() => {
+    setCountB((pre) => pre + 1)
+  }, [])
+  // ここまで
+
+  return (
+    <div className="parent">
+      <div>
+        <h3>親コンポーネント領域</h3>
+        <div>
+          <button
+            onClick={() => {
+              setCountA((pre) => pre + 1)
+            }}
+          >
+            ボタンA
+          </button>
+          <span>親のstateを更新</span>
+        </div>
+      </div>
+      <div>
+        <p>ボタンAクリック回数：{countA}</p>
+      </div>
+      <Child countB={countB} onClick={clickHandler} />
+    </div>
+  )
+}
+
+export default Example
+```
