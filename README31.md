@@ -214,3 +214,88 @@ const Example = () => {
 
 export default Example
 ```
+
+## 161. React.memoを使った不要なレンダリングの防止
+
++ `$ touch 15_performance/src/020_memo/start/Child.js`を実行<br>
+
++ `020_memo/start/Child.js`を編集<br>
+
+```js:Child.js
+import { memo } from 'react'
+
+function areEqual(prevProps, nextProps) {
+  // * 逆にすると逆の結果になる
+  if (prevProps.countB !== nextProps.countB) {
+    return false // 再レンダリング
+  } else {
+    return true // 再レンダリング発生なし
+  }
+  /*
+  nextPropsをrenderに渡した結果が
+  prevPropsをrenderに渡した結果となる時にtrueを返し
+  それイア外の時にfalseを返す
+  */
+}
+
+const ChildMemo = memo(({ countB }) => {
+  console.log('%cChild render', 'color: red;')
+
+  return (
+    <div className="child">
+      <h2>子コンポーネント領域</h2>
+      <span>ボタンBクリック回数：{countB}</span>
+    </div>
+  )
+}, areEqual)
+
+export default ChildMemo
+```
+
++ `15_performance/src/020_memo/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState } from 'react'
+import '../end/Example.css'
+import ChildMemo from './Child'
+
+const Example = () => {
+  console.log('Parent render')
+  const [countA, setCountA] = useState(0)
+  const [countB, setCountB] = useState(0)
+  return (
+    <div className="parent">
+      <h3>React.memoで子コンポーネントの再レンダリングを防止</h3>
+      <div>
+        <h3>親コンポーネント領域</h3>
+        <div>
+          <button
+            onClick={() => {
+              setCountA((pre) => pre + 1)
+            }}
+          >
+            ボタンA
+          </button>
+          <span>親のstateを更新</span>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              setCountB((pre) => pre + 1)
+            }}
+          >
+            ボタンB
+          </button>
+          <span>子のpropsに渡すstateを更新</span>
+        </div>
+      </div>
+      <div>
+        <p>ボタンAクリック回数：{countA}</p>
+      </div>
+      <ChildMemo countB={countB} />
+    </div>
+  )
+}
+
+export default Example
+```
