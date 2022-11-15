@@ -274,3 +274,52 @@ const Example = () => {
 
 export default Example
 ```
+
+## 167. [React18] useDeferredValueでUIのパフォーマンス改善
+
++ `15_performance/src/070_useDeferredValue/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useDeferredValue, useState } from 'react' // 編集
+
+const generateDummyItem = (num) => {
+  return new Array(num).fill(null).map((item, index) => `item ${index}`)
+}
+
+const dummyItems = generateDummyItem(10000)
+
+const Example = () => {
+  // const [isPending, startTransition] = useTransition(); // 削除
+  const [filterVal, setFilterVal] = useState('')
+
+  const changeHandler = (e) => {
+    // 削除
+    // startTransition(() => {
+    //   setFilterVal(e.target.value);
+    // })
+    // ここまで
+    setFilterVal(e.target.value) // 追加
+  }
+
+  // 追加
+  const filteredItems = dummyItems
+    .filter((item) => {
+      if (filterVal === '') return true
+      return item.includes(filterVal)
+    })
+    .map((item) => <li key={item}>{item}</li>)
+
+  const deferredItems = useDeferredValue(filteredItems)
+  // ここまで
+
+  return (
+    <>
+      <input type="text" onChange={changeHandler} />
+      {/* {isPending && <div>Loading...</div>} */}
+      <ul>{deferredItems}</ul> // 編集
+    </>
+  )
+}
+
+export default Example
+```
