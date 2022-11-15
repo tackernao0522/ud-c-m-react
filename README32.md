@@ -95,3 +95,47 @@ const Example = () => {
 
 export default Example
 ```
+
+## 165. セクションまとめ
+
+### 再レンダリングを防ぐための関数
+
++ React.memo() => 受け取ったpropsの値が同じであれば再レンダリングをスキップ<br>
+
++ useCallback() => コンポーネント内で定義した__関数__をメモして再利用し、レンダリングの度に生成されることを防ぐ<br>
+  => 子コンポーネントに関数を渡している場合に、__不要な再レンダリングを防ぐ__ことができる。<br>
+
++ useMemo() => コンポーネントだけでなく値をメモすることが可能。コストの高い処理などをメモ化する。<br>
+  => useMemo自体の実行にもコストがかかるため、重い処理にのみ使用すること。<br>
+
+### 関数がpropsにわたる場合
+
+  __コンポーネント内で定義した関数は再レンダリングのたびに再生成される。__<br>
+
++ `コンポーネントA`<br>
+
+```jsx:Sample.jsx
+const handleClick = () => { ... }
+```
+
+props : { onSmash : handleClick }<br>
+
+↑<br>
+__再レンダリング前後で__コンポーネントA（再レンダリング) 異なる関数！<br>
+↓<br>
+
+```jsx:Sample.jsx
+const handleClick = () => { ... }
+```
+
+props : { onSmash : handleClick }<br>
+
+↓<br>
+
+__子コンポーネントに渡されるpropsに変更あったとみなされる！__<br>
+
+↓<br>
+
+React.memoだけでは再レンダリングを防げない<br>
+
+このような時は`useCallback()`を使用する<br>
