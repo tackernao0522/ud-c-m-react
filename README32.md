@@ -139,3 +139,138 @@ __子コンポーネントに渡されるpropsに変更あったとみなされ�
 React.memoだけでは再レンダリングを防げない<br>
 
 このような時は`useCallback()`を使用する<br>
+
+## 166. [React18] useTransitionでUIのパフォーマンス改善
+
+__Concurrent Mode(React18 ★実験段階)__<br>
+
+__concurrently: 同時に、並行してという意<br>
+処理の優先順位付けを行うことで、より快適でレスポンシブな画面を作成するための機能<br>
+
+__useTransition__<br>
+
+__useDeferredValue__<br>
+
++ `15_performance/src/060_useTransition/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState, useTransition } from "react"; // 編集
+
+const generateDummyItem = (num) => {
+  return new Array(num).fill(null).map((item, index) => `item ${index}`);
+};
+
+const dummyItems = generateDummyItem(10000);
+
+const Example = () => {
+  const [isPending, startTransition] = useTransition() // 追加
+  const [filterVal, setFilterVal] = useState("");
+
+  const changeHandler = (e) => {
+    setFilterVal(e.target.value);
+  };
+
+  return (
+    <>
+      <input type="text" onChange={changeHandler} />
+      <ul>
+        {dummyItems
+          .filter((item) => {
+            if (filterVal === "") return true;
+            return item.includes(filterVal);
+          })
+          .map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+      </ul>
+    </>
+  );
+};
+
+export default Example;
+```
+
++ `15_performance/src/060_useTransition/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState, useTransition } from 'react'
+
+const generateDummyItem = (num) => {
+  return new Array(num).fill(null).map((item, index) => `item ${index}`)
+}
+
+const dummyItems = generateDummyItem(10000)
+
+const Example = () => {
+  const [isPending, startTransition] = useTransition()
+  const [filterVal, setFilterVal] = useState('')
+
+  // 編集
+  const changeHandler = (e) => {
+    startTransition(() => {
+      setFilterVal(e.target.value) // state更新の処理の優先順位が下がることになる
+    })
+  }
+  // ここまで
+
+  return (
+    <>
+      <input type="text" onChange={changeHandler} />
+      <ul>
+        {dummyItems
+          .filter((item) => {
+            if (filterVal === '') return true
+            return item.includes(filterVal)
+          })
+          .map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+      </ul>
+    </>
+  )
+}
+
+export default Example
+```
+
++ `15_performance/src/060_useTransition/start/Example.js`を編集<br>
+
+```js:Example.js
+import { useState, useTransition } from 'react'
+
+const generateDummyItem = (num) => {
+  return new Array(num).fill(null).map((item, index) => `item ${index}`)
+}
+
+const dummyItems = generateDummyItem(10000)
+
+const Example = () => {
+  const [isPending, startTransition] = useTransition()
+  const [filterVal, setFilterVal] = useState('')
+
+  const changeHandler = (e) => {
+    startTransition(() => {
+      setFilterVal(e.target.value) // state更新の処理の優先順位が下がることになる
+    })
+  }
+
+  return (
+    <>
+      <input type="text" onChange={changeHandler} />
+      {isPending && <div>Loading...</div>} // 追加
+      <ul>
+        {dummyItems
+          .filter((item) => {
+            if (filterVal === '') return true
+            return item.includes(filterVal)
+          })
+          .map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+      </ul>
+    </>
+  )
+}
+
+export default Example
+```

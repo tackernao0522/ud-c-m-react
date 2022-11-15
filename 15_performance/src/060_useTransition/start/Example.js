@@ -1,33 +1,37 @@
-import { useState } from "react";
+import { useState, useTransition } from 'react'
 
 const generateDummyItem = (num) => {
-  return new Array(num).fill(null).map((item, index) => `item ${index}`);
-};
+  return new Array(num).fill(null).map((item, index) => `item ${index}`)
+}
 
-const dummyItems = generateDummyItem(10000);
+const dummyItems = generateDummyItem(10000)
 
 const Example = () => {
-  const [filterVal, setFilterVal] = useState("");
+  const [isPending, startTransition] = useTransition()
+  const [filterVal, setFilterVal] = useState('')
 
   const changeHandler = (e) => {
-    setFilterVal(e.target.value);
-  };
+    startTransition(() => {
+      setFilterVal(e.target.value) // state更新の処理の優先順位が下がることになる
+    })
+  }
 
   return (
     <>
       <input type="text" onChange={changeHandler} />
+      {isPending && <div>Loading...</div>}
       <ul>
         {dummyItems
           .filter((item) => {
-            if (filterVal === "") return true;
-            return item.includes(filterVal);
+            if (filterVal === '') return true
+            return item.includes(filterVal)
           })
           .map((item) => (
             <li key={item}>{item}</li>
           ))}
       </ul>
     </>
-  );
-};
+  )
+}
 
-export default Example;
+export default Example
