@@ -189,3 +189,39 @@ const Example = () => {
 
 export default Example
 ```
+
+## 173. 取得したデータを画面に反映してみよう
+
++ `16_rest_api/src/050_axios_get_state/start/Example.js`を編集<br>
+
+```js:Example.js
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+
+const Example = () => {
+  const [users, setUsers] = useState([]) // mapメソッドを使い際に初期値に空の配列を設定する ()だけなら users?.map((user) => ....)とする
+
+  useEffect(() => {
+    console.log('useEffect called')
+    const getUser = async () => {
+      const res = await axios.get('http://localhost:3003/user')
+      setUsers(res.data) // setUsersで更新して回しているので無限ループが起きてしまう console.logは一度だけなので問題ない。
+    }
+    getUser()
+  }, []) // useEffectの第二引数に[]を入れないと再レンダリングの無限ループが起きてしまう
+
+  return (
+    <div>
+      {users.map((user) => (
+        <div key={user.id}>
+          <h3>{user.username}</h3>
+          <p>age: {user.age}</p>
+          <p>hobby: {user.hobbies.join(' , ')}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export default Example
+```
