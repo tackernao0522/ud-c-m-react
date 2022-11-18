@@ -131,3 +131,61 @@ const Example = () => {
 
 export default Example;
 ```
+
+## 171. Axiosを使ってサーバーからデータを取得しよう
+
++ 16_rest_api/src/040_axios_get_request/start/Example.js`を編集<br>
+
+```js:Example.js
+import axios from 'axios'
+import { useEffect } from 'react'
+
+const Example = () => {
+  useEffect(() => {
+    axios.get('http://localhost:3003/user').then((res) => {
+      console.log(res.data)
+    })
+  })
+}
+
+export default Example
+```
+
+又は<br>
+
++ 16_rest_api/src/040_axios_get_request/start/Example.js`を編集(JavaScriptでのAsyncを定義すると警告が出る)<br>
+
+```js:Example.js
+import axios from 'axios'
+import { useEffect } from 'react'
+
+const Example = () => {
+  useEffect(async () => {
+    const res = await axios.get('http://localhost:3003/user')
+    console.log(res.data)
+  })
+}
+
+export default Example
+```
+
+修正<br>
+
++ 16_rest_api/src/040_axios_get_request/start/Example.js`を編集(修正)<br>
+
+```js:Example.js
+import axios from 'axios'
+import { useEffect } from 'react'
+
+const Example = () => {
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await axios.get('http://localhost:3003/user')
+      console.log(res.data)
+    }
+    getUser()
+  })
+}
+
+export default Example
+```
