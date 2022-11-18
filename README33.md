@@ -225,3 +225,219 @@ const Example = () => {
 
 export default Example
 ```
+
+## 174. GUIでリクエストの状態を確認しよう
+
++ [Adavanced REST client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo)<br>
+
++ [POSTMAN](https://www.postman.com/)<br>
+
+`＊` Adavanced REST clientを使ってみる<br>
+
++ `Request URL` => `http://localhost:3003/user`と入力 => `Method` => `POST` => `Body`に下記を貼り付ける<br>
+
+```
+{
+      "id": 1,
+      "username": "hoge太郎",
+      "age": 20,
+      "hobbies": [
+        "サッカー",
+        "野球"
+      ],
+      "premiumAccount": true
+    }
+```
+
++ `Body content type` => `application/json` => `FORMAT JSON`で整形する => `Body`に貼り付けたJSONデータを下記のように編集する(新しいデータを追加するため)<br>
+
+```
+{
+  "id": 10,
+  "username": "hoge",
+  "age": 23,
+  "hobbies": [
+    "サッカー",
+    "野球"
+  ],
+  "premiumAccount": true
+}
+```
+
++ `SEND`をクリック<br>
+
++ `16_rest_api/db/db.json`に上記のデータが追加されている<br>
+
+```json:db:json
+{
+  "todo": [
+    {
+      "id": "c5868bfe-fa1d-4891-acd3-bc43959a9bb7",
+      "content": "洗濯",
+      "editing": false,
+      "completed": true
+    },
+    {
+      "id": "5d87d115-7ebb-4d17-adce-4ffe4b39f8c5",
+      "content": "掃除",
+      "editing": false,
+      "completed": false
+    },
+    {
+      "id": "f2c38014-e2df-40ae-ac93-36303b8771ce",
+      "content": "買い物",
+      "editing": false,
+      "completed": false
+    }
+  ],
+  "user": [
+    {
+      "id": 1,
+      "username": "hoge太郎",
+      "age": 20,
+      "hobbies": [
+        "サッカー",
+        "野球"
+      ],
+      "premiumAccount": true
+    },
+    {
+      "id": 2,
+      "username": "fuga太郎",
+      "age": 17,
+      "hobbies": [
+        "カメラ"
+      ],
+      "premiumAccount": false
+    },
+    {
+      "id": 3,
+      "username": "piyo三郎",
+      "age": 50,
+      "hobbies": [
+        "筋トレ",
+        "水泳"
+      ],
+      "premiumAccount": true
+    },
+    {
+      "id": 10,
+      "username": "hoge",
+      "age": 23,
+      "hobbies": [
+        "サッカー",
+        "野球"
+      ],
+      "premiumAccount": true
+    }
+  ]
+}
+```
+
++ `201 Created` の200番台は正常に処理されたことを表している<br>
+
++ `Method` => `PUT` => `Request URL` => `http://localhost:3000/user/3` => `Body`に下記を貼り付ける<br>
+
+```
+{
+  "id": 3,
+  "username": "piyo三郎",
+  "age": 50,
+  "hobbies": [
+    "筋トレ",
+    "水泳"
+  ],
+  "premiumAccount": true
+}
+```
+
++ 上記のJSONデータを編集<br>
+
+```
+{
+  "id": 3,
+  "username": "piyo次郎",
+  "age": 50,
+  "hobbies": [
+    "筋トレ",
+    "水泳"
+  ],
+  "premiumAccount": true
+}
+```
+
++ `SEND`をクリック<br>
+
++ `16_rest_api/db/db.json`に上記のデータが変更されている<br>
+
+```json:db.json
+{
+  "todo": [
+    {
+      "id": "c5868bfe-fa1d-4891-acd3-bc43959a9bb7",
+      "content": "洗濯",
+      "editing": false,
+      "completed": true
+    },
+    {
+      "id": "5d87d115-7ebb-4d17-adce-4ffe4b39f8c5",
+      "content": "掃除",
+      "editing": false,
+      "completed": false
+    },
+    {
+      "id": "f2c38014-e2df-40ae-ac93-36303b8771ce",
+      "content": "買い物",
+      "editing": false,
+      "completed": false
+    }
+  ],
+  "user": [
+    {
+      "id": 1,
+      "username": "hoge太郎",
+      "age": 20,
+      "hobbies": [
+        "サッカー",
+        "野球"
+      ],
+      "premiumAccount": true
+    },
+    {
+      "id": 2,
+      "username": "fuga太郎",
+      "age": 17,
+      "hobbies": [
+        "カメラ"
+      ],
+      "premiumAccount": false
+    },
+    {
+      "id": 3,
+      "username": "piyo次郎",
+      "age": 50,
+      "hobbies": [
+        "筋トレ",
+        "水泳"
+      ],
+      "premiumAccount": true
+    },
+    {
+      "id": 10,
+      "username": "hoge",
+      "age": 23,
+      "hobbies": [
+        "サッカー",
+        "野球"
+      ],
+      "premiumAccount": true
+    }
+  ]
+}
+```
+
++ `PATCH`メソッドも更新用のメソッドである。上記と同じように編集すれば良い<br>
+
++ `Method` => `DELETE` => `Request URL` => `http://localhost:3003/user/10` => `SEND`<br>
+
++ `idの10`のデータが削除される<br>
