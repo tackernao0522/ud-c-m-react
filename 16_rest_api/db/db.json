@@ -9,12 +9,12 @@
     {
       "id": "5d87d115-7ebb-4d17-adce-4ffe4b39f8c5",
       "content": "掃除",
-      "editing": false,
+      "editing": true,
       "completed": false
     },
     {
       "id": "f2c38014-e2df-40ae-ac93-36303b8771ce",
-      "content": "買い物します",
+      "content": "買い物",
       "editing": false,
       "completed": false
     }

@@ -1,47 +1,58 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from 'react'
+import todoApi from '../api/todo'
 
-const TodoContext = createContext();
-const TodoDispatchContext = createContext();
+const TodoContext = createContext()
+const TodoDispatchContext = createContext()
 
 const todosList = [
   {
     id: 1,
-    content: "店予約する",
+    content: '店予約する',
     editing: false,
   },
   {
     id: 2,
-    content: "卵買う",
+    content: '卵買う',
     editing: false,
   },
   {
     id: 3,
-    content: "郵便出す",
+    content: '郵便出す',
     editing: false,
   },
-];
+]
 
 const todoReducer = (todos, action) => {
   switch (action.type) {
-    case "todo/add":
-      return [...todos, action.todo];
-    case "todo/delete":
+    case 'todo/init': // 追加
+      return [...action.todos]
+    case 'todo/add':
+      return [...todos, action.todo]
+    case 'todo/delete':
       return todos.filter((todo) => {
-        return todo.id !== action.todo.id;
-      });
-    case "todo/update":
+        return todo.id !== action.todo.id
+      })
+    case 'todo/update':
       return todos.map((_todo) => {
         return _todo.id === action.todo.id
           ? { ..._todo, ...action.todo }
-          : { ..._todo };
-      });
+          : { ..._todo }
+      })
     default:
-      return todos;
+      return todos
   }
-};
+}
 
 const TodoProvider = ({ children }) => {
-  const [todos, dispatch] = useReducer(todoReducer, todosList);
+  const [todos, dispatch] = useReducer(todoReducer, []) // 編集
+  // 追加
+  useEffect(() => {
+    todoApi
+      .getAll(() => {})
+      .then((todos) => {
+        dispatch({ type: 'todo/init', todos }) // todosは todos: todosを省略している
+      })
+  }, [])
 
   return (
     <TodoContext.Provider value={todos}>
@@ -49,10 +60,10 @@ const TodoProvider = ({ children }) => {
         {children}
       </TodoDispatchContext.Provider>
     </TodoContext.Provider>
-  );
-};
+  )
+}
 
-const useTodos = () => useContext(TodoContext);
-const useDispatchTodos = () => useContext(TodoDispatchContext);
+const useTodos = () => useContext(TodoContext)
+const useDispatchTodos = () => useContext(TodoDispatchContext)
 
-export { useTodos, useDispatchTodos, TodoProvider };
+export { useTodos, useDispatchTodos, TodoProvider }
