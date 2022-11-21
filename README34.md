@@ -384,3 +384,129 @@ const Example = () => {
 
 export default Example
 ```
+
+## 178. [発展] コンポーネントのダイナミックインポート
+
++ `16_rest_api/src/080_react_lazy/start/Example.js`を編集<br>
+
+```js:Example.js
+import { lazy, useState } from "react";
+// import ComponentA from "./components/ComponentA";
+
+const LazyComponentA = lazy(() => import('./components/ComponentA')) // 追加
+
+const Example = () => {
+  const [compA, setCompA] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setCompA((prev) => !prev)}>ComponentA</button>
+      {compA && <LazyComponentA />} // 編集
+    </>
+  );
+};
+
+console.log('loaded component')
+
+export default Example;
+```
+
++ `16_rest_api/src/080_react_lazy/start/components/ComponentA.js`を編集<br>
+
+```js:Component.js
+const ComponentA = () => {
+  return <h3>Loaded ComponentA!</h3>;
+};
+
+console.log('loaded componentsA') // 追加
+
+export default ComponentA;
+```
+
++ `16_rest_api/src/080_react_lazy/start/Example.js`を編集<br>
+
+```js:Example.js
+import { lazy, Suspense, useState } from 'react'
+// import ComponentA from "./components/ComponentA";
+
+const LazyComponentA = lazy(() => import('./components/ComponentA'))
+
+const Example = () => {
+  const [compA, setCompA] = useState(false)
+
+  return (
+    <>
+      <button onClick={() => setCompA((prev) => !prev)}>ComponentA</button>
+      // 編集
+      <Suspense fallback={<div>Loading!!!!!!!!</div>}>
+        {compA && <LazyComponentA />}
+      </Suspense>
+      // ここまで
+    </>
+  )
+}
+
+export default Example
+```
+
++ `16_rest_api/src/080_react_lazy/start/Example.js`を編集<br>
+
+```js:Example.js
+import { lazy, Suspense, useState } from 'react'
+// import ComponentA from "./components/ComponentA";
+
+const LazyComponentA = lazy(() => import('./components/ComponentA'))
+const LazyComponentB = lazy(() => import('./components/ComponentB')) // 追加
+
+const Example = () => {
+  const [compA, setCompA] = useState(true) // 編集
+
+  return (
+    <>
+      <button onClick={() => setCompA((prev) => !prev)}>ComponentA</button>
+      // 編集
+      <Suspense fallback={<div>Loading!!!!!!!!</div>}>
+        {compA ? <LazyComponentA /> : <LazyComponentB />}
+      </Suspense>
+      // ここまで
+    </>
+  )
+}
+
+export default Example
+```
+
++ `16_rest_api/src/080_react_lazy/start/Example.js`を編集<br>
+
+```js:Example.js
+import { lazy, startTransition, Suspense, useState } from 'react' // 編集
+// import ComponentA from "./components/ComponentA";
+
+const LazyComponentA = lazy(() => import('./components/ComponentA'))
+const LazyComponentB = lazy(() => import('./components/ComponentB'))
+
+const Example = () => {
+  const [compA, setCompA] = useState(true)
+
+  return (
+    <>
+      // 編集
+      <button
+        onClick={() => {
+          startTransition(() => {
+            setCompA((prev) => !prev)
+          })
+        }}
+      >
+        ComponentA
+      </button>
+      // ここまで
+      <Suspense fallback={<div>Loading!!!!!!!!</div>}>
+        {compA ? <LazyComponentA /> : <LazyComponentB />}
+      </Suspense>
+    </>
+  )
+}
+
+export default Example
+```
