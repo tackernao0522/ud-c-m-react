@@ -441,3 +441,212 @@ export default Example
 + `Method` => `DELETE` => `Request URL` => `http://localhost:3003/user/10` => `SEND`<br>
 
 + `idの10`のデータが削除される<br>
+
+## 175. 更新リクエストをサーバーに送信してみよう
+
++ `$ mkdir 060_other_method/start/api && touch $_/todo.js`を実行<br>
+
++ `060_/other_method/start/api/todo.js`を編集<br>
+
+```js:todo.js
+import axios from 'axios'
+
+const ENDPOINT_URL = 'http://localhost:3003/todo'
+
+const todoApi = {
+  async getAll() {
+    const result = await axios.get(ENDPOINT_URL)
+    console.log(result)
+    return result.data
+  },
+}
+
+todoApi.getAll()
+```
+
++ `16_rest_api/src/060_other_method/start/Example.js`を編集<br>
+
+```js:Example.js
+import Todo from "./components/Todo";
+import "./api/todo" // 追加
+
+const Example = () => {
+  return (
+    <>
+      <h2>Reminder</h2>
+      <Todo />
+    </>
+  );
+};
+
+export default Example;
+```
+
+```:terminal
+{data: Array(3), status: 200, statusText: 'OK', headers: {…}, config: {…}, …}
+config
+:
+{transitional: {…}, transformRequest: Array(1), transformResponse: Array(1), timeout: 0, adapter: ƒ, …}
+data
+:
+Array(3)
+0
+:
+{id: 'c5868bfe-fa1d-4891-acd3-bc43959a9bb7', content: '洗濯', editing: false, completed: true}
+1
+:
+{id: '5d87d115-7ebb-4d17-adce-4ffe4b39f8c5', content: '掃除', editing: false, completed: false}
+2
+:
+{id: 'f2c38014-e2df-40ae-ac93-36303b8771ce', content: '買い物', editing: false, completed: false}
+length
+:
+3
+[[Prototype]]
+:
+Array(0)
+headers
+:
+{cache-control: 'no-cache', content-length: '391', content-type: 'application/json; charset=utf-8', expires: '-1', pragma: 'no-cache'}
+request
+:
+XMLHttpRequest {onreadystatechange: null, readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, …}
+status
+:
+200
+statusText
+:
+"OK"
+[[Prototype]]
+:
+Object
+```
+
++ `060_/other_method/start/api/todo.js`を編集<br>
+
+```js:todo.js
+import axios from 'axios'
+
+const ENDPOINT_URL = 'http://localhost:3003/todo'
+
+const todoApi = {
+  async getAll() {
+    const result = await axios.get(ENDPOINT_URL)
+    console.log(result)
+    return result.data
+  },
+  // 追加
+  async post(todo) {
+    const result = await axios.post(ENDPOINT_URL, todo)
+    return result.data
+  },
+  // ここまで
+}
+
+// 編集
+todoApi.post({
+  id: 3432432, // 適当に記述してみた
+  content: 'test',
+})
+```
+
++ Reactのホットリロードにより、`db.json`に上記のpost データが保存されている<br>
+
++ `060_/other_method/start/api/todo.js`を編集<br>
+
+```js:todo.js
+import axios from 'axios'
+
+const ENDPOINT_URL = 'http://localhost:3003/todo'
+
+const todoApi = {
+  async getAll() {
+    const result = await axios.get(ENDPOINT_URL)
+    console.log(result)
+    return result.data
+  },
+  async post(todo) {
+    const result = await axios.post(ENDPOINT_URL, todo)
+    return result.data
+  },
+  async delete(todo) {
+    const result = await axios.delete(`${ENDPOINT_URL}/${todo.id}`)
+    return result.data
+  },
+}
+
+todoApi.delete({
+  id: 3432432,
+})
+```
+
++ Reactのホットリロードにより、`db.json`に上記のdeleteしたidのデータが削除されている<br>
+
++ `060_/other_method/start/api/todo.js`を編集<br>
+
+```js:todo.js
+import axios from 'axios'
+
+const ENDPOINT_URL = 'http://localhost:3003/todo'
+
+const todoApi = {
+  async getAll() {
+    const result = await axios.get(ENDPOINT_URL)
+    console.log(result)
+    return result.data
+  },
+  async post(todo) {
+    const result = await axios.post(ENDPOINT_URL, todo)
+    return result.data
+  },
+  async delete(todo) {
+    const result = await axios.delete(`${ENDPOINT_URL}/${todo.id}`)
+    return result.data
+  },
+  // 追加
+  async patch(todo) {
+    const result = await axios.put(`${ENDPOINT_URL}/${todo.id}`, todo)
+    return result.data
+  },
+}
+
+// 編集
+todoApi.patch({
+  id: 'f2c38014-e2df-40ae-ac93-36303b8771ce',
+  content: '買い物します',
+  editing: false,
+  completed: false,
+})
+```
+
++ Reactのホットリロードにより、`db.json`に上記の更新したidのデータが更新されている<br>
+
++ `060_/other_method/start/api/todo.js`を編集<br>
+
+```js:todo.js
+import axios from 'axios'
+
+const ENDPOINT_URL = 'http://localhost:3003/todo'
+
+const todoApi = {
+  async getAll() {
+    const result = await axios.get(ENDPOINT_URL)
+    console.log(result)
+    return result.data
+  },
+  async post(todo) {
+    const result = await axios.post(ENDPOINT_URL, todo)
+    return result.data
+  },
+  async delete(todo) {
+    const result = await axios.delete(`${ENDPOINT_URL}/${todo.id}`)
+    return result.data
+  },
+  async patch(todo) {
+    const result = await axios.put(`${ENDPOINT_URL}/${todo.id}`, todo)
+    return result.data
+  },
+}
+
+export default todoApi // 編集
+```
