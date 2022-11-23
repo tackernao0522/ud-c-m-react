@@ -158,3 +158,41 @@ a {
 ```
 
 + `$ mkdir 17_nextjs_p1/start/src/components && cp -r 17_nextjs_p1/end/src/components/ 17_nextjs_p1/start/src/components`を実行<br>
+
+## 183. ルーティングとは？ 基本的な書き方について学ぼう
+
++ [router.push](https://nextjs-ja-translation-docs.vercel.app/docs/api-reference/next/router#routerpush) <br>
+
++ `17_nextjs_p1/start/src/pages/index.js`を編集<br>
+
+```js:index.js
+export default function Home() {
+  return <h1>Home</h1>
+}
+
+// localhost:3000のルートでアクセスできるページ
+```
+
++ `$ mkdir 17_nextjs_p1/start/src/pages/07_router && touch $_/index.js`を実行<br>
+
++ `17_nextjs_p1/start/src/pages/07_router/index.js`を編集<br>
+
+```js:index.js
+export default function Blog() {
+  return <h1>Blog Page</h1>
+}
+```
+
++ localhost:3000/07_router にアクセスしてみる<br>
+
++ `$ mkdir 17_nextjs_p1/start/src/pages/07_router/blog && touch  $_/first.js`を実行<br>
+
++ `17/nextjs_p1/start/src/pages/07_router/blog/first.js`を編集<br>
+
+```js:first.js
+export default function First() {
+  return <h1>First</h1>
+}
+```
+
++ localhost:3000/07_router/blog/first にアクセスしてみる<br>
