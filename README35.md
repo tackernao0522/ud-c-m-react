@@ -157,4 +157,4 @@ a {
 }
 ```
 
-+ `$ mkdir 17_nextjs_p1/start/src/components && cp -r 17_nextjs_p1/end/src/components/ 17_nextjs_p1/start/src/components
++ `$ mkdir 17_nextjs_p1/start/src/components && cp -r 17_nextjs_p1/end/src/components/ 17_nextjs_p1/start/src/components`を実行<br>
