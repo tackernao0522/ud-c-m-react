@@ -34,3 +34,24 @@ __Next.jsの主な機能__<br>
 + APIの作成（API Routes）<br>
 
 + デベロッパーに優しい開発環境（ゼロコンフィグ）<br>
+
+## 181. Next.jsをインストールしてみよう
+
++ [next.config.jsの設定方法](https://nextjs.org/docs/api-reference/next.config.js/introduction)<br>
+
++ `$ cd 17_nextjs_p1/start`を実行<br>
+
++ `$ npm install`を実行<br>
+
++ `$ npm run dev`を実行<br>
+
++ localhost:3000 にアクセス<br>
+
++ `$ mkdir 17_nextjs_p1/start/src && mv 17_nextjs_p1/start/{pages,styles} 17_nextjs_p1/start/src`を実行<br>
+
++ `start/src/pages/index.js`を編集<br>
+
+```js:index.js
+export default function Home() {
+}
+```
