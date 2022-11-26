@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 export default function Setting({ query }) {
   const router = useRouter()
   const clickHandler = () => {
-    router.reload()
+    router.push('/', '/dummy-url')
   }
 
   return (
