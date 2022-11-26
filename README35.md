@@ -342,3 +342,193 @@ ServerRouter {
   isLocaleDomain: false
 }
 ```
+
+## 186. useRouterを使って画面遷移を行おう
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  console.log(router.query) // 編集
+  return <h1>routerから取得: {router.query.name}</h1>
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ http:localhost:3000/07_router/hello/setting?key=value&key2=value2 にアクセスしてみる<br>
+
+```:terminal
+{ key: 'value', key2: 'value2', name: 'hello' }
+```
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  console.log(query) // これでも同じ
+  return <h1>routerから取得: {router.query.name}</h1>
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
+```:terminal
+{ key: 'value', key2: 'value2', name: 'hello' }
+```
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  // 追加
+  const clickHandler = () => {
+    router.push('/')
+  }
+  // ここまで
+
+  // 編集
+  return (
+    <>
+      <h1>routerから取得: {router.query.name}</h1>
+      <button onClick={clickHandler}>アクションによる画面遷移</button>
+    </>
+  )
+  // ここまで
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ `アクションによる画面遷移`ボタンをクリックしてみる<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  const clickHandler = () => {
+    router.push('/', '/dummy-url')
+  }
+
+  return (
+    <>
+      <h1>routerから取得: {router.query.name}</h1>
+      <button onClick={clickHandler}>アクションによる画面遷移</button>
+    </>
+  )
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ `アクションによる画面遷移`ボタンをクリックしてみるとTopページのURLが http://localhost:3000/dummy-url になる<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  const clickHandler = () => {
+    router.replace('/', '/dummy-url')
+  }
+
+  return (
+    <>
+      <h1>routerから取得: {router.query.name}</h1>
+      <button onClick={clickHandler}>アクションによる画面遷移</button>
+    </>
+  )
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ `アクションによる画面遷移`ボタンをクリックして再度ブラウザをバックすると前に開いていた画面になる<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  const clickHandler = () => {
+    router.back() // 編集 一つ前の画面に戻ることになる
+  }
+
+  return (
+    <>
+      <h1>routerから取得: {router.query.name}</h1>
+      <button onClick={clickHandler}>アクションによる画面遷移</button>
+    </>
+  )
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  const clickHandler = () => {
+    router.reload()
+  }
+
+  return (
+    <>
+      <h1>routerから取得: {router.query.name}</h1>
+      <button onClick={clickHandler}>アクションによる画面遷移</button>
+    </>
+  )
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ http://localhost:3000/07_router/hello/setting にアクセスして ボタンをクリックするとリロードされる<br>
