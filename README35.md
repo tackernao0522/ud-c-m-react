@@ -196,3 +196,39 @@ export default function First() {
 ```
 
 + localhost:3000/07_router/blog/first にアクセスしてみる<br>
+
+## 184. 動的なルーティングの書き方について学ぼう
+
++ `17_next_p1/start/src/pages/07_router/blog/[number].js`ファイルを作成<br>
+
++ `7_next_p1/start/src/pages/07_router/blog/[number].js`を編集<br>
+
+```js:[number].js
+export default function Home() {
+  return <h1>Home</h1>
+}
+```
+
++ http://localhost:3000/07_router/blog/1 にアクセスしてみる<br>
+
++ http://localhost:3000/07_router/blog/2 にアクセスしてみる<br>
+
++ http://localhost:3000/07_router/blog/3 にアクセスしてみる<br>
+
++ http://localhost:3000/07_router/blog/4 にアクセスしてみる<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]`ディレクトリを作成<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`ファイルを作成<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+export default function Setting() {
+  return <h1>[name]/setting.js</h1>
+}
+```
+
++ http://localhost:3000/07_router/a/setting にアクセスしてみる<br>
+
++ http://localhost:3000/07_router/blog/setting にアクセスしてみる (number.jsが取得される)<br>
