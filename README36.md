@@ -79,3 +79,74 @@ export default function Home() {
   )
 }
 ```
+
+## 188. シングルコンポーネントで複数画面を作成する方法
+
++ `17_nextjs_p1/start/src/pages/08_multipage/index.js`を編集<br>
+
+```js:index.js
+import { useRouter } from 'next/router'
+
+export default function MultiPage() {
+  const router = useRouter()
+  const step = router.query.step ?? 0
+
+  const goToStep = (_step, asPath) => {
+    router.push(`/08_multipage?step=${_step}`, asPath)
+  }
+
+  return (
+    <div>
+      {step == 0 && (
+        <>
+          <h3>Step {step}</h3>
+          <button onClick={() => goToStep(1, '/personal')}>Next Step</button>
+        </>
+      )}
+      {step == 1 && (
+        <>
+          <h3>Step {step}</h3>
+          <button onClick={() => goToStep(2, '/confirm')}>Next Step</button>
+        </>
+      )}
+      {step == 2 && (
+        <>
+          <h3>Step {step}</h3>
+          <button onClick={() => goToStep(0, '/08_multipage')}>
+            Next Step
+          </button>
+        </>
+      )}
+    </div>
+  )
+}
+```
+
++ http://localhost:3000/08_multipage にアクセスしてみる<br>
+
++ `17_nextjs_p1/start/next.config.js`を編集<br>
+
+```js:next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: '/personal',
+        destination: '/08_multipage?step=1',
+      },
+      {
+        source: '/confirm',
+        destination: '/08_multipage?step=2',
+      },
+    ]
+  },
+}
+
+module.exports = nextConfig
+```
+
++ サーバーを一度再起動する<br>
+
++ localhost:3000/personal へアクセスしてみる<br>
