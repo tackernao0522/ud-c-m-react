@@ -232,3 +232,113 @@ export default function Setting() {
 + http://localhost:3000/07_router/a/setting にアクセスしてみる<br>
 
 + http://localhost:3000/07_router/blog/setting にアクセスしてみる (number.jsが取得される)<br>
+
+## 185. 指定されたパスの値をJSで取得
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+export default function Setting({ hello }) {
+  return <h1>{hello}</h1>
+}
+
+export async function getServerSideProps() {
+  return {
+    props: { hello: 'こんにちは' },
+  }
+}
+```
+
++ http://localhost:3000/07_router/a/setting にアクセスしてみる<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+export default function Setting({ hello }) {
+  return <h1>{hello}</h1>
+}
+
+export async function getServerSideProps(context) {
+  console.log(context.query)
+  return {
+    props: { hello: 'こんにちは' },
+  }
+}
+```
+
++ http://localhost:3000/07_router/a/setting にアクセスしてみる<br>
+
+```:terminal
+{ name: 'a' }
+```
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+export default function Setting({ query }) {
+  return <h1>{query.name}</h1>
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ http://localhost:3000/07_router/a/setting にアクセスしてみる<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  return <h1>routerから取得: {router.query.name}</h1>
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
++ http://localhost:3000/07_router/hello/setting へアクセスしてみる<br>
+
++ `17_next_p1/start/src/pages/07_router/[name]/setting.js`を編集<br>
+
+```js:setting.js
+import { useRouter } from 'next/router'
+
+export default function Setting({ query }) {
+  const router = useRouter()
+  console.log(router)
+  return <h1>routerから取得: {router.query.name}</h1>
+}
+
+export async function getServerSideProps({ query }) {
+  return {
+    props: { query },
+  }
+}
+```
+
+```:terminal
+ServerRouter {
+  route: '/07_router/[name]/setting',
+  pathname: '/07_router/[name]/setting',
+  query: { name: 'hello' },
+  asPath: '/07_router/hello/setting',
+  isFallback: false,
+  basePath: '',
+  locale: undefined,
+  locales: undefined,
+  defaultLocale: undefined,
+  isReady: true,
+  domainLocales: undefined,
+  isPreview: false,
+  isLocaleDomain: false
+}
+```
