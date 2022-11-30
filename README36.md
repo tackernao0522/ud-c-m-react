@@ -463,3 +463,112 @@ export default function PageLink() {
   )
 }
 ```
+
+## 190. [_app.js] サイト全体に設定を加える方法について学ぼう
+
+`＊` _app.jsと`_`を付けるとページの必ず実行されるコンポーネントになる(pagesディレクトリ配下にある関数コンポーネントが実行される前には必ず実行されるということ)<br>
+
++ `$ mkdir 17_nextjs_p1/start/src/pages/10_layout && touch $_/{index.js,layout1.js,layout2.js}`を実行<br>
+
++ `17_nextjs_p1/start/src/pages/10_layout/index.js`を編集<br>
+
+```js:index.js
+import Link from 'next/link'
+
+export default function Page() {
+  return (
+    <ul>
+      <li>
+        <Link href="/10_layout/layout1">
+          <a>レイアウト1</a>
+        </Link>
+      </li>
+      <li>
+        <Link href="/10_layout/layout2">
+          <a>レイアウト2</a>
+        </Link>
+      </li>
+    </ul>
+  )
+}
+```
+
++ `17_nextjs_p1/start/src/pages/10_layout/layout1.js`を編集<br>
+
+```js:layout1.js
+export default function Page() {
+  return (
+    <div>
+      <p>レイアウト1: ヘッダーがTOPにある</p>
+    </div>
+  )
+}
+```
+
++ `17_nextjs_p1/start/src/pages/10_layout/layout2.js`を編集<br>
+
+```js:layout2.js
+export default function Page() {
+  return (
+    <div>
+      <p>レイアウト2: ヘッダーがBOTTOMにある</p>
+    </div>
+  )
+}
+```
+
++ `17_nextjs/p1/start/src/pages/_app.js`を編集<br>
+
+```js:_app.js
+import { AppProvider } from '../context/AppContext'
+import '../styles/globals.css'
+import Layout1 from '../components/layout/layout1' // 追加
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <AppProvider>
+      // 編集
+      <Layout1>
+        <Component {...pageProps} />
+      </Layout1>
+      // ここまで
+    </AppProvider>
+  )
+}
+
+export default MyApp
+```
+
++ `17_nextjs_p1/start/src/pages/10_layout/layout2.js`を編集<br>
+
+```js:layout2.js
+import Layout2 from '../../components/layout/layout2' // 追加
+
+export default function Page() {
+  return (
+    <div>
+      <p>レイアウト2: ヘッダーがBOTTOMにある</p>
+    </div>
+  )
+}
+
+// 追加
+Page.getLayout = (page) => {
+  return <Layout2>{page}</Layout2>
+}
+```
+
++ `17_nextjs/p1/start/src/pages/_app.js`を編集<br>
+
+```js:_app.js
+import { AppProvider } from '../context/AppContext'
+import '../styles/globals.css'
+import Layout1 from '../components/layout/layout1'
+
+function MyApp({ Component, pageProps }) {
+  const getLayout = Component.getLayout ?? ((page) => <Layout1>{page}</Layout1>)
+  return <AppProvider>{getLayout(<Component {...pageProps} />)}</AppProvider>
+}
+
+export default MyApp
+```
