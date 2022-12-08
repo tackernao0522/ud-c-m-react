@@ -74,3 +74,241 @@ __デメリット__<br>
 
 + サーバーの設定が少し手間<br>
 + 基本はNext.jsの開発元のVercelを使う<br>
+
+## 194. 書きながら学びたい人はコトラを受講ください
+
++ `$ mkdir 18_nextjs_p2/start/src && mkdir $_/pages && touch $_/_app.js`を実行<br>
+
++ `18_nextjs_p2/start/pages/_app.js`を編集<br>
+
+```js:_app.js
+import '../styles/globals.css'
+import Layout from '../components/layout'
+
+function Myapp({ component, pageProps }) {
+  return (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  )
+}
+
+export default Myapp
+```
+
++ `$ touch 18_nextjs_p2/start/src/pages/index.js`を実行<br>
+
++ `18_nextjs_p2/start/src/pages/index.js`を編集<br>
+
+```js:index.js
+import Link from 'next/link'
+import { navList } from '../data/nav'
+
+export default function Home() {
+  return (
+    <ul>
+      {navList.map((item) => (
+        <li key={item}>
+          <Link href={`/${item}`}>
+            <a>{item}</a>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
++ `$ mkdir 18_nextjs_p2/start/src/styles && touch $_/globals.css`を実行<br>
+
++ `18_nextjs_p2/start/src/styles && touch $_/globals.css`を編集<br>
+
+```css:globals.css
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.text {
+  line-height: 1.5;
+  padding-left: 20px;
+  font-size: 18px;
+}
+
+.date {
+  font-size: 14px;
+  text-align: right;
+  color: #333;
+}
+
+.list {
+  padding: 0;
+  list-style: none;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.listItem:not(first-child) {
+  margin-top: 10px;
+}
+
+.container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.container:hover {
+  opacity: 0.7;
+  transform: scale(1.05, 1.05);
+}
+
+.container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.container:hover {
+  opacity: 0.7;
+  transform: scale(1.05, 1.05);
+}
+
+.title {
+  font-size: 24px;
+  position: relative;
+}
+
+.titleSub {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 12px;
+  color: #ccc;
+  font-weight: 400;
+  padding-bottom: 8px;
+  transform: translateY(-100%);
+}
+
+.layout {
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 160px 20px 80px;
+  min-height: 100vh;
+  background-color: #eee;
+  color: #000;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-shadow: 0 2px 4px gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 12px;
+  background-color: #fff;
+  z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.link {
+  padding: 4px 12px;
+  color: #000;
+  font-size: 14;
+}
+
+.link:hover {
+  opacity: 0.7;
+}
+```
+
++ `$ 18_nextjs/start/src/components/layout/index.js`を実行<br>
+
++ `18_nextjs/start/src/components/layout/index.js`を編集<br>
+
+```js:index.js
+import Header from '../header'
+
+export default function Layout({ children }) {
+  return (
+    <>
+      <Header />
+      <main className="layout">{children}</main>
+    </>
+  )
+}
+```
+
++ `$ mkdir 18_nextjs_p2/start/src/components/header && touch $_/index.js`を実行<br>
+
++ `18_nextjs_p2/start/src/components/header/index.js`を編集<br>
+
+```js:index.js
+import Image from 'next/image'
+import Link from 'next/link'
+import { navList } from '../../data/nav'
+
+export default function Header() {
+  return (
+    <header className="header">
+      <Link href="/">
+        <a>
+          <Image
+            loader={({ src }) => src}
+            src="/vercel.svg"
+            width={177}
+            height={40}
+          />
+        </a>
+      </Link>
+      <nav>
+        <ul className="nav">
+          {navList.map((item) => (
+            <li key={item}>
+              <Link href={`/${item}`}>
+                <a className="link">{item}</a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+  )
+}
+```
+
++ `$ mkdir18_nextjs_2/start/src/data && touch $_/nav.js`を実行<br>
+
++ `18_nextjs_p2/start/src/data/nav.js`を編集<br>
+
+```js:nav.js
+export const navList = ['010_SSR']
+```
