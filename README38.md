@@ -381,6 +381,7 @@ import { useEffect, useState } from 'react'
 
 export default function SSR() {
   console.log('hello')
+  // window.localStorage.setItem('key', 'value') // errorになる
 
   useEffect(() => {
     window.localStorage.setItem('key', 'value') // 外で書かずにuseEffect内に書く
@@ -390,4 +391,40 @@ export default function SSR() {
   const val = 0
   return <h3>{state}</h3>
 }
+```
+
+## 197. [SSR] 挙動について理解しよう [Part.2]
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useEffect, useState } from 'react'
+
+export default function SSR() {
+  console.log('hello')
+
+  useEffect(() => {
+    console.log('useEffect')
+    window.localStorage.setItem('key', 'value')
+  }, [])
+
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+```
+
++ `next.config.js`の下記をtrueにすると'useEffect'は2回表示され、falseにすると'1回のみの表示となる<br>
+
+```js:next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false, // true or falseにしてみる
+  trailingSlash: true,
+  images: {
+    loader: 'custom',
+  },
+}
+
+module.exports = nextConfig
 ```

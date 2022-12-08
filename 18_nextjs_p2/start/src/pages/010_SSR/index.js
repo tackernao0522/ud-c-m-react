@@ -4,6 +4,7 @@ export default function SSR() {
   console.log('hello')
 
   useEffect(() => {
+    console.log('useEffect')
     window.localStorage.setItem('key', 'value')
   }, [])
 
