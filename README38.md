@@ -312,3 +312,27 @@ export default function Header() {
 ```js:nav.js
 export const navList = ['010_SSR']
 ```
+
+## 195. [注意] 本セクションのendフォルがのコードを動かす際の注意点
+
+本セクションのendフォルダ内のコードではJSON Serverからデータを取得している箇所があります。<br>
+
+そのため、JSON Serverを裏側で動かしていないと npm run build などを実行した際にエラーが発生します。<br>
+
++ エラーメッセージと事象<br>
+
+npm run devやnpm run buildを実行すると、030_SG_fetchでエラーが発生します。<br>
+
+理由としてはJSON Serverが立ち上がっていないため、Next.jsからJSON Serverへのリクエストが正常に行えないため。（JSON ServerからJSONの情報が返ってこない。）<br>
+
+<img src="https://i.gyazo.com/ac2b326bf434c1b1f34b0142b6b8861c.png" /> <br>
+
+JSON Serverを実行しながらNext.jsを実行するためには、「Split Terminal」、または「New Terminal」で２つターミナルを立ち上げて、片方でJSON Serverを実行し、もう片方でNext.jsを実行するようにします。<br>
+
++ ターミナルを二つ立ち上げる<br>
+
+「Split Terminal」で二つターミナルを立ち上げて、JSON ServerとNext.jsを同時に実行する。<br>
+
+<img src="https://i.gyazo.com/6a3e57558f1554b2795e9930820b684b.png" /> <br>
+
+以上、ご留意ください。<br>
