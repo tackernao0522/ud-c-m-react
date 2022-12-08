@@ -9,7 +9,9 @@ export default function Header() {
         <a>
           <Image
             loader={({ src }) => src}
+            unoptimized={true}
             src="/vercel.svg"
+            alt="vercel"
             width={177}
             height={40}
           />

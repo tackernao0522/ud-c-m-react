@@ -85,7 +85,7 @@ __デメリット__<br>
 import '../styles/globals.css'
 import Layout from '../components/layout'
 
-function Myapp({ component, pageProps }) {
+function Myapp({ Component, pageProps }) {
   return (
     <Layout>
       <Component {...pageProps} />
@@ -283,7 +283,9 @@ export default function Header() {
         <a>
           <Image
             loader={({ src }) => src}
+            unoptimized={true}
             src="/vercel.svg"
+            alt="vercel"
             width={177}
             height={40}
           />
@@ -336,3 +338,56 @@ JSON Serverを実行しながらNext.jsを実行するためには、「Split Te
 <img src="https://i.gyazo.com/6a3e57558f1554b2795e9930820b684b.png" /> <br>
 
 以上、ご留意ください。<br>
+
+## 196. [SSR] 挙動について理解しよう[Part.1]
+
++ `$18_nextjs_p2/start/src/pages/010_SSR && touch $_/index.js`を実行<br>
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+export default function SSR() {
+
+}
+```
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+export default function SSR() {
+  console.log('hello')
+  const val = 0
+  return <h3>{val}</h3>
+}
+```
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useState } from 'react'
+
+export default function SSR() {
+  console.log('hello')
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+```
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useEffect, useState } from 'react'
+
+export default function SSR() {
+  console.log('hello')
+
+  useEffect(() => {
+    window.localStorage.setItem('key', 'value') // 外で書かずにuseEffect内に書く
+  }, [])
+
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+```

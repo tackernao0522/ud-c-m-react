@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import Layout from '../components/layout'
 
-function Myapp({ component, pageProps }) {
+function Myapp({ Component, pageProps }) {
   return (
     <Layout>
       <Component {...pageProps} />
