@@ -428,3 +428,160 @@ const nextConfig = {
 
 module.exports = nextConfig
 ```
+
+## 198. [SSR] getServerSideProps関数について学ぼう
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useEffect, useState } from 'react'
+
+export default function SSR({ message }) {
+  console.log('hello')
+  console.log(message)
+
+  useEffect(() => {
+    console.log('useEffect')
+    window.localStorage.setItem('key', 'value')
+  }, [])
+
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+
+export async function getServerSideProps(context) {
+  return {
+    props: { message: 'From Server Side Props' },
+  }
+}
+```
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useEffect, useState } from 'react'
+
+export default function SSR({ message }) {
+  console.log('hello')
+  console.log(message)
+
+  useEffect(() => {
+    console.log('useEffect')
+    window.localStorage.setItem('key', 'value')
+  }, [])
+
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+
+export async function getServerSideProps(context) {
+  return {
+    redirect: {
+      destination: '/', // 画面を更新するとTopページにリダイレクトされる
+    },
+    props: { message: 'From Server Side Props' },
+  }
+}
+```
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useEffect, useState } from 'react'
+
+export default function SSR({ message }) {
+  console.log('hello')
+  console.log(message)
+
+  useEffect(() => {
+    console.log('useEffect')
+    window.localStorage.setItem('key', 'value')
+  }, [])
+
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+
+export async function getServerSideProps(context) {
+  return {
+    redirect: {
+      destination: '/',
+      permanent: true, // falseは一時的にリダイレクトされ、trueにすると恒久的にリダイレクトされる
+    },
+    props: { message: 'From Server Side Props' },
+  }
+}
+```
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useEffect, useState } from 'react'
+
+export default function SSR({ message }) {
+  console.log('hello')
+  console.log(message)
+
+  useEffect(() => {
+    console.log('useEffect')
+    window.localStorage.setItem('key', 'value')
+    document.cookie = 'val=0; path=/;' // 追加
+  }, [])
+
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+
+export async function getServerSideProps(context) {
+  const { cookie } = context.req.headers
+  console.log('cookie', cookie)
+
+  return {
+    // redirect: {
+    //   destination: '/',
+    //   permanent: false,
+    // },
+    props: { message: 'From Server Side Props' },
+  }
+}
+```
+
++ `18_nextjs_p2/start/src/pages/010_SSR/index.js`を編集<br>
+
+```js:index.js
+import { useEffect, useState } from 'react'
+
+export default function SSR({ message }) {
+  console.log('hello')
+  console.log(message)
+
+  useEffect(() => {
+    console.log('useEffect')
+    window.localStorage.setItem('key', 'value')
+    document.cookie = 'val=0; path=/;'
+  }, [])
+
+  const [state, setState] = useState('bye')
+  const val = 0
+  return <h3>{state}</h3>
+}
+
+// getServerSidePropsは 'pages'でのみ設定できる
+export async function getServerSideProps(context) {
+  const { cookie } = context.req.headers
+  console.log('cookie', cookie)
+  console.log('getServerSideProps is executed')
+
+  return {
+    // redirect: {
+    //   destination: '/',
+    //   permanent: false,
+    // },
+    props: { message: 'From Server Side Props' },
+  }
+}
+```
