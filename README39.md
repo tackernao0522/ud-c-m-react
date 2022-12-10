@@ -207,3 +207,176 @@ export async function getStaticProps() {
 ```
 
 + `$ npm run export`を実行<br>
+
+## 202. [SG] getStaticPaths関数について学ぼう
+
++ `18_nextjs_p2/start/src/pages/020_SG`ディレクトリに`[id].js`ファイルを作成<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+export default function Page({ id }) {
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      id: '1',
+    },
+  }
+}
+```
+
++ `$ npm run export`を実行(Errorになる)<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+export default function Page({ id }) {
+  return <h3>このページは{id}です。</h3>
+}
+
+// 追加
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: 1 } }],
+    fallback: false,
+  }
+}
+// ここまで
+
+export async function getStaticProps() {
+  return {
+    props: {
+      id: '1',
+    },
+  }
+}
+```
+
++ `$ npm run export`を実行(Errorになる)<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+export default function Page({ id }) {
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: '1' } }], // 1 と文字列に修正
+    fallback: false,
+  }
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      id: '1',
+    },
+  }
+}
+```
+
++ `$ npm run export`を実行(成功する)<br>
+
++ http://127.0.0.1:5500/020_SG/1/ にアクセスしてみる<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+export default function Page({ id }) {
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }], // 編集
+    fallback: false,
+  }
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      id: '1',
+    },
+  }
+}
+```
+
++ `$ npm run export`を実行<br>
+
++ http://127.0.0.1:5500/020_SG/2/ にアクセスしてみる<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+export default function Page({ id }) {
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+    fallback: false,
+  }
+}
+
+export async function getStaticProps(context) { // 編集
+  console.log(context) // 追加
+  return {
+    props: {
+      id: '1',
+    },
+  }
+}
+```
+
++ `$ npm run export`を実行<br>
+
+```:terminal
+$ npm run export
+
+{
+  params: { id: '1' },
+  locales: undefined,
+  locale: undefined,
+  defaultLocale: undefined
+}
+{
+  params: { id: '2' },
+  locales: undefined,
+  locale: undefined,
+  defaultLocale: undefined
+}
+```
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+export default function Page({ id }) {
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+    fallback: false,
+  }
+}
+
+export async function getStaticProps({ params }) {
+  return {
+    props: {
+      id: params.id,
+    },
+  }
+}
+```
+
++ `$ npm run export`を実行<br>
+
++ http://127.0.0.1:5500/020_SG/1/ 及び http://127.0.0.1:5500/020_SG/2/ にアクセスしてみる<br>
