@@ -168,3 +168,42 @@ module.exports = nextConfig
 ```
 
 + `$ npm run export`を実行<br>
+
+## 201. [SG] getStaticProps関数について学ぼう
+
++ `18_nextjs_p2/start/src/pages/020_SG/index.js`を編集<br>
+
+```js:index.js
+// Static Site Generation
+export default function IndexPage({ message }) {
+  return <h3>5G:{message}</h3>
+}
+
+export async function getStaticProps() {
+  return {
+    props: { message: 'From Static Props' },
+  }
+}
+```
+
++ `$ npm run export`を実行<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/index.js`を編集<br>
+
+```js:index.js
+// Static Site Generation
+export default function IndexPage({ message }) {
+  return <h3>5G:{message}</h3>
+}
+
+// buildのタイミングで実行される関数である
+export async function getStaticProps() {
+  console.log('getStaticProps') // 追加
+
+  return {
+    props: { message: 'From Static Props' },
+  }
+}
+```
+
++ `$ npm run export`を実行<br>
