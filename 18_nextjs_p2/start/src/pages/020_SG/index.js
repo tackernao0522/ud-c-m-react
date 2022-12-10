@@ -4,7 +4,7 @@ export default function IndexPage({ message }) {
 }
 
 export async function getStaticProps() {
-  console.log('getStaticProps')
+  // console.log('getStaticProps')
 
   return {
     props: { message: 'From Static Props' },

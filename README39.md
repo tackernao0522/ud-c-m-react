@@ -380,3 +380,137 @@ export async function getStaticProps({ params }) {
 + `$ npm run export`を実行<br>
 
 + http://127.0.0.1:5500/020_SG/1/ 及び http://127.0.0.1:5500/020_SG/2/ にアクセスしてみる<br>
+
+## 203. [SG] fallbackプロパティの挙動を理解しよう
+
+`＊` fallback: false の場合<br>
+
++ `$ npm run build`を実行<br>
+
++ `$ npm run start`を実行<br>
+
++ localhost:4020 にアクセスする<br>
+
++ localhost:4020/3 にアクセスしてみる(404ページが表示される)<br>
+
+`＊` fallback: false の場合<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+import { useRouter } from 'next/router' // 追加
+
+export default function Page({ id }) {
+  // 追加
+  const router = useRouter()
+  if(router.isFallback) {
+    return <h3>Loading...</h3>
+  }
+  // ここまで
+
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+    fallback: true, // 編集
+  }
+}
+
+export async function getStaticProps({ params }) {
+  return {
+    props: {
+      id: params.id,
+    },
+  }
+}
+```
+
++ `$ npm run build`を実行<br>
+
++ `$ npm run start`を実行<br>
+
++ localhost:4020/3 にアクセスしてみる(Loading...が表示されてid: 3のページが作成されて表示される)<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+import { useRouter } from 'next/router'
+
+export default function Page({ id }) {
+  const router = useRouter()
+  if (router.isFallback) {
+    return <h3>Loading...</h3>
+  }
+
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticPaths() {
+  console.log('getStaticPaths') // 追加
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+    fallback: true,
+  }
+}
+
+export async function getStaticProps({ params }) {
+  console.log('getStaticProps executed')
+  return {
+    props: {
+      id: params.id,
+    },
+  }
+}
+```
+
++ `$ npm run build`を実行<br>
+
++ `$ npm run start`を実行<br>
+
++ localhost:4020/3 にアクセスしてみる<br>
+
+```:terminal
+getStaticProps executed
+```
+
+`*` fallback: "blocking" の場合<br>
+
++ `18_nextjs_p2/start/src/pages/020_SG/[id].js`を編集<br>
+
+```js:[id].js
+import { useRouter } from 'next/router'
+
+export default function Page({ id }) {
+  const router = useRouter()
+  if (router.isFallback) {
+    return <h3>Loading...</h3>
+  }
+
+  return <h3>このページは{id}です。</h3>
+}
+
+export async function getStaticPaths() {
+  console.log('getStaticPaths')
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }],
+    fallback: "blocking",
+  }
+}
+
+export async function getStaticProps({ params }) {
+  console.log('getStaticProps executed')
+  return {
+    props: {
+      id: params.id,
+    },
+  }
+}
+```
+
++ `$ npm run build`を実行<br>
+
++ `$ npm run start`を実行<br>
+
++ localhost:4020/6 にアクセスしてみる(Loading... が表示されなくなる)<br>
