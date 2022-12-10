@@ -149,3 +149,22 @@ export default function SSR({ }) {
 + `$ npm run build`を実行<br>
 
 + `$ npm run export`を実行(成功する)<br>
+
+## 200. [SG] エクスポートする際の注意点
+
++ `18_nextjs_p2/start/next.config.js`を編集<br>
+
+```js:next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false,
+  trailingSlash: true, // 追加
+  images: {
+    loader: 'custom',
+  },
+}
+
+module.exports = nextConfig
+```
+
++ `$ npm run export`を実行<br>
